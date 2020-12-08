@@ -11,16 +11,6 @@ namespace Esperecyan.UniVRMExtensions
     public class VRMInitializer
     {
         /// <summary>
-        /// 当エディタ拡張の名称。
-        /// </summary>
-        internal const string Name = "InitializeVRM.cs";
-
-        /// <summary>
-        /// 当エディタ拡張のバージョン。
-        /// </summary>
-        internal const string Version = "1.1.0";
-
-        /// <summary>
         /// プレハブアセットを上書きしてVRMプレハブにします。
         /// </summary>
         /// <param name="prefabPath">「Assets/」で始まるプレハブアセットのパス。</param>

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using VRM;
+using Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents;
 
 namespace Esperecyan.UniVRMExtensions
 {
@@ -9,6 +10,16 @@ namespace Esperecyan.UniVRMExtensions
     /// </summary>
     internal static class MenuItems
     {
+        /// <summary>
+        /// 当エディタ拡張の名称。
+        /// </summary>
+        internal const string Name = "InitializeVRM.cs";
+
+        /// <summary>
+        /// 当エディタ拡張のバージョン。
+        /// </summary>
+        internal const string Version = "1.1.0";
+
         /// <summary>
         /// 追加するメニューアイテムの、「VRM」メニュー内の位置。
         /// </summary>
@@ -22,7 +33,7 @@ namespace Esperecyan.UniVRMExtensions
             if (animator == null || !animator.isHuman)
             {
                 EditorUtility.DisplayDialog(
-                    VRMInitializer.Name + "-" + VRMInitializer.Version,
+                    MenuItems.Name + "-" + MenuItems.Version,
                     "HumanoidのAnimatorコンポーネントがアタッチされたGameObjectを選択した状態で実行してください。",
                     "OK"
                 );
@@ -32,7 +43,7 @@ namespace Esperecyan.UniVRMExtensions
             if (gameObject.GetComponent<VRMMeta>() != null)
             {
                 EditorUtility.DisplayDialog(
-                    VRMInitializer.Name + "-" + VRMInitializer.Version,
+                    MenuItems.Name + "-" + MenuItems.Version,
                     "選択中のアバターはVRMプレハブです。",
                     "OK"
                 );
@@ -44,7 +55,7 @@ namespace Esperecyan.UniVRMExtensions
             VRMInitializer.Initialize(path);
 
             EditorUtility.DisplayDialog(
-                VRMInitializer.Name + "-" + VRMInitializer.Version,
+                MenuItems.Name + "-" + MenuItems.Version,
                 $"「{path}」へVRMプレハブを生成しました。",
                 "OK"
             );
@@ -58,6 +69,15 @@ namespace Esperecyan.UniVRMExtensions
         private static bool ActiveObjectIsGameObject()
         {
             return Selection.activeObject is GameObject gameObject && !AssetDatabase.IsSubAsset(gameObject);
+        }
+
+        /// <summary>
+        /// 選択されているアバターの変換ダイアログを開きます。
+        /// </summary>
+        [MenuItem("VRM/Open CopyVRMSettings Wizard", false, MenuItems.Priority + 1)]
+        private static void OpenWizard()
+        {
+            Wizard.Open();
         }
     }
 }

@@ -15,11 +15,6 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
     public class Wizard : ScriptableWizard
     {
         /// <summary>
-        /// 追加するメニューアイテムの、「VRM」メニュー内の位置。
-        /// </summary>
-        public const int Priority = 1101;
-
-        /// <summary>
         /// 設定のコピー元のアバター。
         /// </summary>
         [SerializeField]
@@ -47,23 +42,12 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
         private bool vrmSpringBone = true;
 
         /// <summary>
-        /// 選択されているアバターの変換ダイアログを開きます。
-        /// </summary>
-        [MenuItem("VRM/" + CopyVRMSettings.Name + "-" + CopyVRMSettings.Version, false, Wizard.Priority)]
-        private static void OpenWizard()
-        {
-            Wizard.Open();
-        }
-
-        /// <summary>
         /// ダイアログを開きます。
         /// </summary>
         internal static void Open()
         {
-            var wizard = DisplayWizard<Wizard>(
-                CopyVRMSettings.Name + " " + CopyVRMSettings.Version,
-                Gettext._("Copy and Paste")
-            );
+            ScriptableWizard
+                .DisplayWizard<Wizard>(MenuItems.Name + "-" + MenuItems.Version, Gettext._("Copy and Paste"));
         }
 
         protected override bool DrawWizardGUI()
@@ -187,7 +171,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
             );
 
             EditorUtility.DisplayDialog(
-                CopyVRMSettings.Name + "-" + CopyVRMSettings.Version,
+                MenuItems.Name + "-" + MenuItems.Version,
                 Gettext._("Settings copying and pasting is completed."),
                 Gettext._("OK")
             );
