@@ -16,22 +16,21 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
         /// <param name="destination"></param>
         internal static void Copy(GameObject source, GameObject destination)
         {
-            BlendShapeAvatar sourceBlendShapeAvatar = source.GetComponent<VRMBlendShapeProxy>().BlendShapeAvatar;
-            BlendShapeAvatar destinationBlendShapeAvatar
-                = destination.GetComponent<VRMBlendShapeProxy>().BlendShapeAvatar;
+            var sourceBlendShapeAvatar = source.GetComponent<VRMBlendShapeProxy>().BlendShapeAvatar;
+            var destinationBlendShapeAvatar = destination.GetComponent<VRMBlendShapeProxy>().BlendShapeAvatar;
             if (sourceBlendShapeAvatar == destinationBlendShapeAvatar)
             {
                 return;
             }
 
-            foreach (BlendShapeClip sourceClip in sourceBlendShapeAvatar.Clips)
+            foreach (var sourceClip in sourceBlendShapeAvatar.Clips)
             {
                 if (!sourceClip)
                 {
                     continue;
                 }
 
-                CopyVRMBlendShapes.CopyBlendShapeClip(sourceClip: sourceClip, source: source, destination: destination);
+                CopyVRMBlendShapes.CopyBlendShapeClip(sourceClip, source, destination);
             }
         }
 
@@ -43,12 +42,11 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
         /// <param name="destination"></param>
         private static void CopyBlendShapeClip(BlendShapeClip sourceClip, GameObject source, GameObject destination)
         {
-            BlendShapeAvatar destinationBlendShapeAvatar
-                = destination.GetComponent<VRMBlendShapeProxy>().BlendShapeAvatar;
+            var destinationBlendShapeAvatar = destination.GetComponent<VRMBlendShapeProxy>().BlendShapeAvatar;
 
-            BlendShapeClip destinationClip = sourceClip.Preset != BlendShapePreset.Unknown
-                ? destinationBlendShapeAvatar.GetClip(preset: sourceClip.Preset)
-                : destinationBlendShapeAvatar.GetClip(name: sourceClip.BlendShapeName);
+            var destinationClip = sourceClip.Preset != BlendShapePreset.Unknown
+                ? destinationBlendShapeAvatar.GetClip(sourceClip.Preset)
+                : destinationBlendShapeAvatar.GetClip(sourceClip.BlendShapeName);
             if (sourceClip == destinationClip)
             {
                 return;
@@ -57,16 +55,15 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
             if (!destinationClip)
             {
                 destinationClip = BlendShapeAvatar.CreateBlendShapeClip(
-                    path: UnityPath.FromAsset(destinationBlendShapeAvatar)
+                    UnityPath.FromAsset(destinationBlendShapeAvatar)
                         .Parent.Child(Path.GetFileName(AssetDatabase.GetAssetPath(sourceClip))).Value
                 );
                 destinationBlendShapeAvatar.Clips.Add(destinationClip);
                 EditorUtility.SetDirty(destinationBlendShapeAvatar);
             }
 
-            destinationClip.Values = sourceClip.Values.Select(binding =>
-                CopyVRMBlendShapes.CopyBlendShapeBinding(binding: binding, source: source, destination: destination)
-            ).ToArray();
+            destinationClip.Values = sourceClip.Values
+                .Select(binding => CopyVRMBlendShapes.CopyBlendShapeBinding(binding, source, destination)).ToArray();
 
             destinationClip.MaterialValues = sourceClip.MaterialValues.ToArray();
 
@@ -86,18 +83,18 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
             GameObject destination
         )
         {
-            Mesh sourceMesh = CopyVRMBlendShapes.GetMesh(binding: binding, avatar: source);
+            var sourceMesh = CopyVRMBlendShapes.GetMesh(binding, source);
             if (!sourceMesh)
             {
                 return binding;
             }
 
-            string shapeKeyName = sourceMesh.GetBlendShapeName(binding.Index);
+            var shapeKeyName = sourceMesh.GetBlendShapeName(binding.Index);
 
-            Mesh destinationMesh = CopyVRMBlendShapes.GetMesh(relativePath: binding.RelativePath, avatar: destination);
+            var destinationMesh = CopyVRMBlendShapes.GetMesh(binding.RelativePath, destination);
             if (destinationMesh)
             {
-                int index = destinationMesh.GetBlendShapeIndex(shapeKeyName);
+                var index = destinationMesh.GetBlendShapeIndex(shapeKeyName);
                 if (index != -1)
                 {
                     binding.Index = index;
@@ -105,7 +102,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                 }
             }
 
-            return CopyVRMBlendShapes.FindShapeKey(binding: binding, shapeKeyName: shapeKeyName, avatar: destination);
+            return CopyVRMBlendShapes.FindShapeKey(binding, shapeKeyName, destination);
         }
 
         /// <summary>
@@ -116,7 +113,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
         /// <returns></returns>
         private static Mesh GetMesh(string relativePath, GameObject avatar)
         {
-            Transform transform = avatar.transform.Find(relativePath);
+            var transform = avatar.transform.Find(relativePath);
             if (!transform)
             {
                 return null;
@@ -139,7 +136,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
         /// <returns></returns>
         private static Mesh GetMesh(BlendShapeBinding binding, GameObject avatar)
         {
-            Mesh mesh = CopyVRMBlendShapes.GetMesh(relativePath: binding.RelativePath, avatar: avatar);
+            var mesh = CopyVRMBlendShapes.GetMesh(binding.RelativePath, avatar);
             if (!mesh || binding.Index > mesh.blendShapeCount)
             {
                 return null;
@@ -167,20 +164,20 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                     continue;
                 }
 
-                int index = mesh.GetBlendShapeIndex(shapeKeyName);
+                var index = mesh.GetBlendShapeIndex(shapeKeyName);
                 if (index == -1)
                 {
                     continue;
                 }
 
-                binding.RelativePath = renderer.transform.RelativePathFrom(root: avatar.transform);
+                binding.RelativePath = renderer.transform.RelativePathFrom(avatar.transform);
                 binding.Index = index;
                 return binding;
             }
 
             foreach (var renderer in renderers)
             {
-                Mesh mesh = renderer.sharedMesh;
+                var mesh = renderer.sharedMesh;
                 if (!mesh)
                 {
                     continue;
@@ -188,13 +185,13 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
 
                 for (var i = 0; i < mesh.blendShapeCount; i++)
                 {
-                    string name = mesh.GetBlendShapeName(i);
+                    var name = mesh.GetBlendShapeName(i);
                     if (!name.EndsWith(shapeKeyName) && !shapeKeyName.EndsWith(name))
                     {
                         continue;
                     }
 
-                    binding.RelativePath = renderer.transform.RelativePathFrom(root: avatar.transform);
+                    binding.RelativePath = renderer.transform.RelativePathFrom(avatar.transform);
                     binding.Index = i;
                     return binding;
                 }

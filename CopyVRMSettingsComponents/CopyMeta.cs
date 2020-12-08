@@ -16,8 +16,8 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
         /// <returns></returns>
         internal static void Copy(GameObject source, GameObject destination)
         {
-            VRMMetaObject sourceMeta = source.GetComponent<VRMMeta>().Meta;
-            VRMMetaObject destinationMeta = destination.GetComponent<VRMMeta>().Meta;
+            var sourceMeta = source.GetComponent<VRMMeta>().Meta;
+            var destinationMeta = destination.GetComponent<VRMMeta>().Meta;
             if (sourceMeta == destinationMeta)
             {
                 return;
@@ -40,8 +40,8 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
         /// <param name="destination"></param>
         private static void CopyInformation(GameObject source, GameObject destination)
         {
-            VRMMetaObject sourceMeta = source.GetComponent<VRMMeta>().Meta;
-            VRMMetaObject destinationMeta = destination.GetComponent<VRMMeta>().Meta;
+            var sourceMeta = source.GetComponent<VRMMeta>().Meta;
+            var destinationMeta = destination.GetComponent<VRMMeta>().Meta;
 
             destinationMeta.Title = sourceMeta.Title;
             destinationMeta.Version = sourceMeta.Version;
@@ -55,20 +55,20 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                 return;
             }
 
-            string sourceThumbnailPath = AssetDatabase.GetAssetPath(destinationMeta.Thumbnail);
+            var sourceThumbnailPath = AssetDatabase.GetAssetPath(destinationMeta.Thumbnail);
             if (UnityPath.FromUnityPath(sourceThumbnailPath).Parent.Value
                 != UnityPath.FromAsset(source).GetAssetFolder(suffix: ".Textures").Value)
             {
                 return;
             }
 
-            string destinationPrefabPath = CopyVRMSettings.GetPrefabAssetPath(destination);
+            var destinationPrefabPath = CopyVRMSettings.GetPrefabAssetPath(destination);
             if (string.IsNullOrEmpty(destinationPrefabPath))
             {
                 return;
             }
 
-            string destinationThumbnailPath = UnityPath.FromUnityPath(destinationPrefabPath)
+            var destinationThumbnailPath = UnityPath.FromUnityPath(destinationPrefabPath)
                 .GetAssetFolder(suffix: ".Textures")
                 .Child(Path.GetFileName(sourceThumbnailPath)).GenerateUniqueAssetPath().Value;
             AssetDatabase.CopyAsset(sourceThumbnailPath, destinationThumbnailPath);

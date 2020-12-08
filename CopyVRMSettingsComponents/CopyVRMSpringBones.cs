@@ -24,7 +24,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
             foreach (Component component in new[] { typeof(VRMSpringBone), typeof(VRMSpringBoneColliderGroup) }
                 .SelectMany(type => destination.GetComponentsInChildren(type)))
             {
-                UnityEngine.Object.DestroyImmediate(component);
+                Object.DestroyImmediate(component);
             }
 
             IDictionary<Transform, Transform> transformMapping = new Dictionary<Transform, Transform>();
@@ -37,10 +37,10 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                 }
 
                 transformMapping = CopyVRMSpringBones.CopySpringBone(
-                    sourceSpringBone: sourceSpringBone,
-                    destination: destination,
-                    sourceSkeletonBones: sourceSkeletonBones,
-                    transformMapping: transformMapping
+                    sourceSpringBone,
+                    destination,
+                    sourceSkeletonBones,
+                    transformMapping
                 );
             }
 
@@ -75,8 +75,8 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                     : (transformMapping[destinationSpringBone.m_center] = BoneMapper.FindCorrespondingBone(
                         sourceBone: destinationSpringBone.m_center,
                         source: sourceSpringBone.transform.root.gameObject,
-                        destination: destination,
-                        sourceSkeletonBones: sourceSkeletonBones
+                        destination,
+                        sourceSkeletonBones
                     ));
             }
 
@@ -90,8 +90,8 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                         : (transformMapping[sourceSpringBoneRoot] = BoneMapper.FindCorrespondingBone(
                             sourceBone: sourceSpringBoneRoot,
                             source: sourceSpringBone.transform.root.gameObject,
-                            destination: destination,
-                            sourceSkeletonBones: sourceSkeletonBones
+                            destination,
+                            sourceSkeletonBones
                         )))
                     : null;
             }
@@ -106,8 +106,8 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                         : (transformMapping[sourceColliderGroup.transform] = BoneMapper.FindCorrespondingBone(
                             sourceBone: sourceColliderGroup.transform,
                             source: sourceSpringBone.transform.root.gameObject,
-                            destination: destination,
-                            sourceSkeletonBones: sourceSkeletonBones
+                            destination,
+                            sourceSkeletonBones
                         )))
                     : null;
 

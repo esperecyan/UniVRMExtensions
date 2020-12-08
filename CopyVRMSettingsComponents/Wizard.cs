@@ -183,7 +183,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
             CopyVRMSettings.Copy(
                 source: this.sourceAvatar.gameObject,
                 destination: this.destinationAvatar.gameObject,
-                components: components
+                components
             );
 
             EditorUtility.DisplayDialog(

@@ -25,7 +25,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
             {
                 if (destinationFirstPerson)
                 {
-                    UnityEngine.Object.DestroyImmediate(destinationFirstPerson);
+                    Object.DestroyImmediate(destinationFirstPerson);
                 }
                 return;
             }
@@ -55,9 +55,9 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                     continue;
                 }
 
-                string sourceMeshName = sourceMesh.name;
+                var sourceMeshName = sourceMesh.name;
 
-                int index = destinationFirstPerson.Renderers.FindIndex(match: flags => {
+                var index = destinationFirstPerson.Renderers.FindIndex(match: flags => {
                     Mesh destinationMesh = flags.SharedMesh;
                     return destinationMesh && destinationMesh.name == sourceMeshName;
                 });
@@ -66,7 +66,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                     continue;
                 }
 
-                VRMFirstPerson.RendererFirstPersonFlags destinationFlags = destinationFirstPerson.Renderers[index];
+                var destinationFlags = destinationFirstPerson.Renderers[index];
                 destinationFlags.FirstPersonFlag = sourceFlags.FirstPersonFlag;
                 destinationFirstPerson.Renderers[index] = destinationFlags;
             }

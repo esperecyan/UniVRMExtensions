@@ -48,8 +48,8 @@ namespace Esperecyan.UniVRMExtensions.Utilities
                 return null;
             }
 
-            string sourceBoneRelativePath = sourceBone.RelativePathFrom(root: source.transform);
-            Transform destinationBone = destination.transform.Find(sourceBoneRelativePath);
+            var sourceBoneRelativePath = sourceBone.RelativePathFrom(root: source.transform);
+            var destinationBone = destination.transform.Find(sourceBoneRelativePath);
             if (destinationBone)
             {
                 return destinationBone;
@@ -60,17 +60,15 @@ namespace Esperecyan.UniVRMExtensions.Utilities
                 return null;
             }
 
-            var humanoidAndSkeletonBone
-                = BoneMapper.ClosestSkeletonBone(bone: sourceBone, skeletonBones: sourceSkeletonBones);
-            Animator destinationAniamtor = destination.GetComponent<Animator>();
-            Transform destinationSkeletonBone = destinationAniamtor.GetBoneTransform(humanoidAndSkeletonBone.Key);
+            var humanoidAndSkeletonBone = BoneMapper.ClosestSkeletonBone(sourceBone, sourceSkeletonBones);
+            var destinationAniamtor = destination.GetComponent<Animator>();
+            var destinationSkeletonBone = destinationAniamtor.GetBoneTransform(humanoidAndSkeletonBone.Key);
             if (!destinationSkeletonBone)
             {
                 return null;
             }
 
-            destinationBone
-                = destinationSkeletonBone.Find(sourceBone.RelativePathFrom(root: humanoidAndSkeletonBone.Value));
+            destinationBone = destinationSkeletonBone.Find(sourceBone.RelativePathFrom(humanoidAndSkeletonBone.Value));
             if (destinationBone)
             {
                 return destinationBone;
@@ -99,8 +97,7 @@ namespace Esperecyan.UniVRMExtensions.Utilities
                     continue;
                 }
 
-                return skeletonBones
-                    .FirstOrDefault(predicate: humanoidAndSkeletonBone => humanoidAndSkeletonBone.Value == parent);
+                return skeletonBones.FirstOrDefault(humanoidAndSkeletonBone => humanoidAndSkeletonBone.Value == parent);
             }
 
             throw new ArgumentException();

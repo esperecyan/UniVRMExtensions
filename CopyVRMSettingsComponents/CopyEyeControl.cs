@@ -32,7 +32,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                 var destinationLookAtHead = destination.GetComponent<VRMLookAtHead>();
                 if (destinationLookAtHead)
                 {
-                    UnityEngine.Object.DestroyImmediate(destinationLookAtHead);
+                    Object.DestroyImmediate(destinationLookAtHead);
                 }
                 return;
             }
@@ -66,7 +66,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                 var blendShapeApplyer = destination.GetComponent<VRMLookAtBlendShapeApplyer>();
                 if (blendShapeApplyer)
                 {
-                    UnityEngine.Object.DestroyImmediate(blendShapeApplyer);
+                    Object.DestroyImmediate(blendShapeApplyer);
                 }
                 return;
             }
