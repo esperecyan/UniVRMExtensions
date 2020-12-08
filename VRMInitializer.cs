@@ -8,13 +8,6 @@ namespace Esperecyan.UniVRMExtensions
     /// <summary>
     /// Hmanoidモデルを直接VRMプレハブにします。
     /// </summary>
-    /// <remarks>
-    /// 
-    /// 
-    /// 動作確認バージョン: UniVRM 0.62.0, Unity 2020.1.16f1
-    /// ライセンス: MIT License (MIT) <https://spdx.org/licenses/MIT.html>
-    /// 配布元: <https://gist.github.com/esperecyan/>
-    /// </remarks>
     public class VRMInitializer
     {
         /// <summary>
