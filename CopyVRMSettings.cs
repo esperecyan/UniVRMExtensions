@@ -28,7 +28,6 @@ namespace Esperecyan.UniVRMExtensions
         public static readonly IDictionary<Type, string> RequiredComponentsAndFields = new Dictionary<Type, string> {
             { typeof(Animator), "" },
             { typeof(VRMMeta), "Meta" },
-            { typeof(VRMHumanoidDescription), "Description" },
             { typeof(VRMBlendShapeProxy), "BlendShapeAvatar" },
         };
 

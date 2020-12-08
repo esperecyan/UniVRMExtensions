@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UniGLTF;
-using VRM;
 
 namespace Esperecyan.UniVRMExtensions.Utilities
 {
@@ -20,11 +19,15 @@ namespace Esperecyan.UniVRMExtensions.Utilities
         internal static Dictionary<HumanBodyBones, Transform> GetAllSkeletonBones(GameObject avatar)
         {
             var animator = avatar.GetComponent<Animator>();
-            return avatar.GetComponent<VRMHumanoidDescription>().Description.human
-                .Select(boneLimit => boneLimit.humanBone)
+            return Enum.GetValues(typeof(HumanBodyBones)).Cast<HumanBodyBones>()
+                .Select(bone => (
+                    bone,
+                    transform: bone != HumanBodyBones.LastBone ? animator.GetBoneTransform(bone) : null
+                ))
+                .Where(boneTransformPair => boneTransformPair.transform != null)
                 .ToDictionary(
-                    keySelector: humanoidBone => humanoidBone,
-                    elementSelector: humanoidBone => animator.GetBoneTransform(humanoidBone)
+                    boneTransformPair => boneTransformPair.bone,
+                    boneTransformPair => boneTransformPair.transform
                 );
         }
 
