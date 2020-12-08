@@ -1,6 +1,7 @@
 {
     "name": "Esperecyan.UniVRMExtensions",
     "references": [
+        "UniHumanoid",
         "VRM"
     ],
     "includePlatforms": [
