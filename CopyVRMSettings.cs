@@ -123,11 +123,7 @@ namespace Esperecyan.UniVRMExtensions
 
             if (destinationPrefab)
             {
-#if UNITY_2018_3_OR_NEWER
                 PrefabUtility.ApplyPrefabInstance(destination, InteractionMode.AutomatedAction);
-#else
-                PrefabUtility.ReplacePrefab(destination, destinationPrefab, ReplacePrefabOptions.ConnectToPrefab);
-#endif
                 UnityEngine.Object.DestroyImmediate(destination);
             }
         }
@@ -144,16 +140,7 @@ namespace Esperecyan.UniVRMExtensions
         /// <returns>「Assets/」から始まるパス。プレハブのインスタンスでなかった場合は空文字列。</returns>
         internal static string GetPrefabAssetPath(GameObject prefab)
         {
-#if UNITY_2018_3_OR_NEWER
             return PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(prefab);
-#else
-            GameObject root = PrefabUtility.FindPrefabRoot(prefab);
-            if (!root)
-            {
-                return "";
-            }
-            return AssetDatabase.GetAssetPath(root);
-#endif
         }
     }
 }
