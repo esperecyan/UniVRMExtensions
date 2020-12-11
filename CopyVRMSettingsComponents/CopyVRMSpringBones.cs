@@ -37,6 +37,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                 }
 
                 transformMapping = CopyVRMSpringBones.CopySpringBone(
+                    source,
                     sourceSpringBone,
                     destination,
                     sourceSkeletonBones,
@@ -50,12 +51,14 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
         /// <summary>
         /// VRMSpringBone、およびVRMSpringBoneColliderGroupをコピーします。
         /// </summary>
+        /// <param name="source"></param>
         /// <param name="sourceSpringBone"></param>
         /// <param name="destination"></param>
         /// <param name="sourceSkeletonBones"></param>
         /// <param name="transformMapping"></param>
         /// <returns>更新された <c>transformMapping</c> を返します。</returns>
         private static IDictionary<Transform, Transform> CopySpringBone(
+            GameObject source,
             VRMSpringBone sourceSpringBone,
             GameObject destination,
             Dictionary<HumanBodyBones, Transform> sourceSkeletonBones,
@@ -115,7 +118,9 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                 if (destinationColliderGroupTransform)
                 {
                     CopyVRMSpringBones.CopySpringBoneColliderGroups(
+                        source,
                         sourceBone: sourceColliderGroup.transform,
+                        destination,
                         destinationBone: destinationColliderGroupTransform
                     );
                     destinationColliderGroup
@@ -130,19 +135,39 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
         /// <summary>
         /// コピー先にVRMSpringBoneColliderGroupが存在しなければ、コピー元のVRMSpringBoneColliderGroupをすべてコピーします。
         /// </summary>
+        /// <param name="source"
         /// <param name="sourceBone"></param>
+        /// <param name="destination"></param>
         /// <param name="destinationBone"></param>
-        private static void CopySpringBoneColliderGroups(Transform sourceBone, Transform destinationBone)
+        private static void CopySpringBoneColliderGroups(
+            GameObject source,
+            Transform sourceBone,
+            GameObject destination,
+            Transform destinationBone
+        )
         {
             if (destinationBone.GetComponent<VRMSpringBoneColliderGroup>())
             {
                 return;
             }
 
-            foreach (var colliderGroup in sourceBone.GetComponents<VRMSpringBoneColliderGroup>())
+            var localAngularDifference
+                = destinationBone.transform.rotation * Quaternion.Inverse(destination.transform.rotation)
+                    * Quaternion.Inverse(sourceBone.transform.rotation * Quaternion.Inverse(source.transform.rotation));
+
+            foreach (var sourceColliderGroup in sourceBone.GetComponents<VRMSpringBoneColliderGroup>())
             {
-                ComponentUtility.CopyComponent(colliderGroup);
+                ComponentUtility.CopyComponent(sourceColliderGroup);
                 ComponentUtility.PasteComponentAsNew(destinationBone.gameObject);
+
+                // 正規化されていないモデルに対応するため、オフセットをルートからの相対的な向きに
+                var colliderGroup = destinationBone.GetComponents<VRMSpringBoneColliderGroup>().Last();
+                foreach (var collider in colliderGroup.Colliders)
+                {
+                    collider.Offset = Quaternion.FromToRotation(Vector3.forward, collider.Offset)
+                        * localAngularDifference * collider.Offset;
+                }
+
             }
         }
 
@@ -158,7 +183,9 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
             foreach (var humanoidBone in new[] { HumanBodyBones.LeftHand, HumanBodyBones.RightHand })
             {
                 CopyVRMSpringBones.CopySpringBoneColliderGroups(
+                    source,
                     sourceBone: sourceAnimator.GetBoneTransform(humanoidBone),
+                    destination,
                     destinationBone: destinationAnimator.GetBoneTransform(humanoidBone)
                 );
             }
