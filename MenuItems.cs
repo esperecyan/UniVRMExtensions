@@ -13,7 +13,7 @@ namespace Esperecyan.UniVRMExtensions
         /// <summary>
         /// 当エディタ拡張の名称。
         /// </summary>
-        internal const string Name = "InitializeVRM.cs";
+        internal const string Name = "UniVRMExtensions";
 
         /// <summary>
         /// 当エディタ拡張のバージョン。
