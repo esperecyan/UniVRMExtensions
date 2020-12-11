@@ -21,7 +21,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
             Dictionary<HumanBodyBones, Transform> sourceSkeletonBones
         )
         {
-            foreach (Component component in new[] { typeof(VRMSpringBone), typeof(VRMSpringBoneColliderGroup) }
+            foreach (var component in new[] { typeof(VRMSpringBone), typeof(VRMSpringBoneColliderGroup) }
                 .SelectMany(type => destination.GetComponentsInChildren(type)))
             {
                 Object.DestroyImmediate(component);
@@ -62,11 +62,11 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
             IDictionary<Transform, Transform> transformMapping
         )
         {
-            GameObject destinationSecondary = destination.transform.Find("secondary").gameObject;
+            var destinationSecondary = destination.transform.Find("secondary").gameObject;
 
             ComponentUtility.CopyComponent(sourceSpringBone);
             ComponentUtility.PasteComponentAsNew(destinationSecondary);
-            VRMSpringBone destinationSpringBone = destinationSecondary.GetComponents<VRMSpringBone>().Last();
+            var destinationSpringBone = destinationSecondary.GetComponents<VRMSpringBone>().Last();
 
             if (destinationSpringBone.m_center)
             {
@@ -82,7 +82,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
 
             for (var i = 0; i < destinationSpringBone.RootBones.Count; i++)
             {
-                Transform sourceSpringBoneRoot = destinationSpringBone.RootBones[i];
+                var sourceSpringBoneRoot = destinationSpringBone.RootBones[i];
 
                 destinationSpringBone.RootBones[i] = sourceSpringBoneRoot
                     ? (transformMapping.ContainsKey(sourceSpringBoneRoot)
@@ -98,9 +98,9 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
 
             for (var i = 0; i < destinationSpringBone.ColliderGroups.Length; i++)
             {
-                VRMSpringBoneColliderGroup sourceColliderGroup = destinationSpringBone.ColliderGroups[i];
+                var sourceColliderGroup = destinationSpringBone.ColliderGroups[i];
 
-                Transform destinationColliderGroupTransform = sourceColliderGroup
+                var destinationColliderGroupTransform = sourceColliderGroup
                     ? (transformMapping.ContainsKey(sourceColliderGroup.transform)
                         ? transformMapping[sourceColliderGroup.transform]
                         : (transformMapping[sourceColliderGroup.transform] = BoneMapper.FindCorrespondingBone(
