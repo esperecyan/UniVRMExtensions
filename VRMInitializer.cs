@@ -14,9 +14,13 @@ namespace Esperecyan.UniVRMExtensions
         /// プレハブアセットを上書きしてVRMプレハブにします。
         /// </summary>
         /// <param name="prefabPath">「Assets/」で始まるプレハブアセットのパス。</param>
-        public static void Initialize(string prefabPath)
+        /// <param name="prefabInstance"><see cref="PrefabUtility.LoadPrefabContents"/>で開いたプレハブインスタンス。
+        ///     指定されていなければ、「prefabPath」を<see cref="PrefabUtility.LoadPrefabContents"/>で開き、処理後、
+        ///     <see cref="PrefabUtility.SaveAsPrefabAsset"/>、<see cref="PrefabUtility.UnloadPrefabContents"/>、
+        ///     <see cref="PrefabUtility.SaveAssets"/>を実行します。</param>
+        public static void Initialize(string prefabPath, GameObject prefabInstance = null)
         {
-            var prefab = PrefabUtility.LoadPrefabContents(prefabPath);
+            var prefab = prefabInstance != null ? prefabInstance : PrefabUtility.LoadPrefabContents(prefabPath);
 
             var animator = prefab.GetComponent<Animator>();
 
@@ -57,9 +61,12 @@ namespace Esperecyan.UniVRMExtensions
                 secondary.gameObject.AddComponent<VRMSpringBone>();
             }
 
-            PrefabUtility.SaveAsPrefabAsset(prefab, prefabPath);
-            PrefabUtility.UnloadPrefabContents(prefab);
-            AssetDatabase.SaveAssets();
+            if (prefabInstance)
+            {
+                PrefabUtility.SaveAsPrefabAsset(prefab, prefabPath);
+                PrefabUtility.UnloadPrefabContents(prefab);
+                AssetDatabase.SaveAssets();
+            }
         }
     }
 }
