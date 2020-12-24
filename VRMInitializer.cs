@@ -61,7 +61,7 @@ namespace Esperecyan.UniVRMExtensions
                 secondary.gameObject.AddComponent<VRMSpringBone>();
             }
 
-            if (prefabInstance)
+            if (prefabInstance == null)
             {
                 PrefabUtility.SaveAsPrefabAsset(prefab, prefabPath);
                 PrefabUtility.UnloadPrefabContents(prefab);
