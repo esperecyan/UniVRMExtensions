@@ -1,7 +1,9 @@
 {
     "name": "Esperecyan.UniVRMExtensions",
+    "rootNamespace": "",
     "references": [
-        "VRM"
+        "VRM",
+        "UniGLTF"
     ],
     "includePlatforms": [
         "Editor"
