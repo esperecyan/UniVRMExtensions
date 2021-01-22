@@ -25,7 +25,7 @@ namespace Esperecyan.UniVRMExtensions
         /// </summary>
         private const int Priority = 1100;
 
-        [MenuItem("VRM/プレハブバリアントを作ってVRMプレハブ化", false, MenuItems.Priority)]
+        [MenuItem("VRM0/プレハブバリアントを作ってVRMプレハブ化", false, MenuItems.Priority)]
         private static void Initialize()
         {
             var gameObject = Selection.activeObject as GameObject;
@@ -65,7 +65,7 @@ namespace Esperecyan.UniVRMExtensions
         /// 選択されているオブジェクトがGameObject、かつサブアセットではなければ <c>true</c> を返します。
         /// </summary>
         /// <returns></returns>
-        [MenuItem("VRM/プレハブバリアントを作ってVRMプレハブ化", true)]
+        [MenuItem("VRM0/プレハブバリアントを作ってVRMプレハブ化", true)]
         private static bool ActiveObjectIsGameObject()
         {
             return Selection.activeObject is GameObject gameObject && !AssetDatabase.IsSubAsset(gameObject);
@@ -74,7 +74,7 @@ namespace Esperecyan.UniVRMExtensions
         /// <summary>
         /// 選択されているアバターの変換ダイアログを開きます。
         /// </summary>
-        [MenuItem("VRM/Open CopyVRMSettings Wizard", false, MenuItems.Priority + 1)]
+        [MenuItem("VRM0/Open CopyVRMSettings Wizard", false, MenuItems.Priority + 1)]
         private static void OpenWizard()
         {
             Wizard.Open();
