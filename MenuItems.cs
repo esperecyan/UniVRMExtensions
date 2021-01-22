@@ -18,7 +18,7 @@ namespace Esperecyan.UniVRMExtensions
         /// <summary>
         /// 当エディタ拡張のバージョン。
         /// </summary>
-        internal const string Version = "1.5.0";
+        internal const string Version = "1.6.0";
 
         /// <summary>
         /// 追加するメニューアイテムの、「VRM」メニュー内の位置。
