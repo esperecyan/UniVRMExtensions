@@ -8,17 +8,17 @@ namespace Esperecyan.UniVRMExtensions
     /// <summary>
     /// メニューアイテムへの追加とバリデート。
     /// </summary>
-    internal static class MenuItems
+    public static class MenuItems
     {
+        /// <summary>
+        /// 当エディタ拡張のバージョン。
+        /// </summary>
+        public const string Version = "1.6.1";
+
         /// <summary>
         /// 当エディタ拡張の名称。
         /// </summary>
         internal const string Name = "UniVRMExtensions";
-
-        /// <summary>
-        /// 当エディタ拡張のバージョン。
-        /// </summary>
-        internal const string Version = "1.6.1";
 
         /// <summary>
         /// 追加するメニューアイテムの、「VRM」メニュー内の位置。
