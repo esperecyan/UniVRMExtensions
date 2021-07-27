@@ -13,7 +13,7 @@ namespace Esperecyan.UniVRMExtensions
         /// <summary>
         /// 当エディタ拡張のバージョン。
         /// </summary>
-        public const string Version = "1.6.2";
+        public const string Version = "1.6.3";
 
         /// <summary>
         /// 当エディタ拡張の名称。
