@@ -84,7 +84,9 @@ namespace Esperecyan.UniVRMExtensions
                 AssetDatabase.CreateAsset(instance, destinationPath);
             }
 
-            return AssetDatabase.LoadAssetAtPath<T>(destinationPath);
+            var asset = AssetDatabase.LoadAssetAtPath<T>(destinationPath);
+            EditorUtility.SetDirty(asset);
+            return asset;
         }
 
         /// <summary>
