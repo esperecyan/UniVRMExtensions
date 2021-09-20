@@ -1,5 +1,7 @@
+using System.Linq;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.PackageManager;
 using VRM;
 using Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents;
 
@@ -13,7 +15,7 @@ namespace Esperecyan.UniVRMExtensions
         /// <summary>
         /// 当エディタ拡張のバージョン。
         /// </summary>
-        public static string Version => "1.6.3";
+        public static string Version { get; private set; }
 
         /// <summary>
         /// 当エディタ拡張の名称。
@@ -78,6 +80,22 @@ namespace Esperecyan.UniVRMExtensions
         private static void OpenWizard()
         {
             Wizard.Open();
+        }
+
+        [InitializeOnLoadMethod]
+        private static void LoadVersion()
+        {
+            var request = Client.List(offlineMode: true, includeIndirectDependencies: true);
+            EditorApplication.update += () =>
+            {
+                if (request.IsCompleted)
+                {
+                    return;
+                }
+
+                MenuItems.Version
+                    = request.Result.FirstOrDefault(info => info.name == "jp.pokemori.univrmextensions")?.version;
+            };
         }
     }
 }
