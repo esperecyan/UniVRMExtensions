@@ -88,7 +88,7 @@ namespace Esperecyan.UniVRMExtensions
             var request = Client.List(offlineMode: true, includeIndirectDependencies: true);
             EditorApplication.update += () =>
             {
-                if (request.IsCompleted)
+                if (!request.IsCompleted)
                 {
                     return;
                 }
