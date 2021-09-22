@@ -86,16 +86,20 @@ namespace Esperecyan.UniVRMExtensions
         private static void LoadVersion()
         {
             var request = Client.List(offlineMode: true, includeIndirectDependencies: true);
-            EditorApplication.update += () =>
+            EditorApplication.CallbackFunction handler = null;
+            handler = () =>
             {
                 if (!request.IsCompleted)
                 {
                     return;
                 }
 
+                EditorApplication.update -= handler;
+
                 MenuItems.Version
                     = request.Result.FirstOrDefault(info => info.name == "jp.pokemori.univrmextensions")?.version;
             };
+            EditorApplication.update += handler;
         }
     }
 }
