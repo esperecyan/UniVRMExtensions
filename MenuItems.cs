@@ -1,7 +1,6 @@
-using System.Linq;
+using System;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.PackageManager;
 using VRM;
 using Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents;
 
@@ -12,10 +11,21 @@ namespace Esperecyan.UniVRMExtensions
     /// </summary>
     public static class MenuItems
     {
+        [Serializable]
+        private class Package
+        {
+            [SerializeField]
+#pragma warning disable IDE1006 // 命名スタイル
+            internal string version;
+#pragma warning restore IDE1006 // 命名スタイル
+        }
+
         /// <summary>
         /// 当エディタ拡張のバージョン。
         /// </summary>
         public static string Version { get; private set; }
+
+        private static readonly string PackageJSONGUID = "b0a763f5e0017914a8effa5e6e1ec9c9";
 
         /// <summary>
         /// 当エディタ拡張の名称。
@@ -85,21 +95,14 @@ namespace Esperecyan.UniVRMExtensions
         [InitializeOnLoadMethod]
         private static void LoadVersion()
         {
-            var request = Client.List(offlineMode: true, includeIndirectDependencies: true);
-            void Handler()
+            var package = AssetDatabase.LoadAssetAtPath<TextAsset>(
+                AssetDatabase.GUIDToAssetPath(MenuItems.PackageJSONGUID)
+            );
+            if (package == null)
             {
-                if (!request.IsCompleted)
-                {
-                    return;
-                }
-
-                EditorApplication.update -= Handler;
-
-                MenuItems.Version
-                    = request.Result.FirstOrDefault(info => info.name == "jp.pokemori.univrmextensions")?.version;
+                return;
             }
-
-            EditorApplication.update += Handler;
+            MenuItems.Version = JsonUtility.FromJson<Package>(package.text).version;
         }
     }
 }
