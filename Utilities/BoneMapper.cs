@@ -58,7 +58,7 @@ namespace Esperecyan.UniVRMExtensions.Utilities
                 return destinationBone;
             }
 
-            if (!sourceBone.IsChildOf(source.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.Hips)))
+            if (!sourceBone.IsChildOf(sourceSkeletonBones[HumanBodyBones.Hips]))
             {
                 return null;
             }
