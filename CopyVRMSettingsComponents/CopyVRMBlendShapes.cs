@@ -58,6 +58,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                     UnityPath.FromAsset(destinationBlendShapeAvatar)
                         .Parent.Child(Path.GetFileName(AssetDatabase.GetAssetPath(sourceClip))).Value
                 );
+                destinationClip.BlendShapeName = sourceClip.BlendShapeName;
                 destinationBlendShapeAvatar.Clips.Add(destinationClip);
                 EditorUtility.SetDirty(destinationBlendShapeAvatar);
             }
