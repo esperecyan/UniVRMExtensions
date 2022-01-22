@@ -71,15 +71,6 @@ namespace Esperecyan.UniVRMExtensions
                 CopyVRMBlendShapes.Copy(source: source, destination: destination);
             }
 
-            var sourceIsAsset = PrefabUtility.IsPartOfPrefabAsset(source);
-            if (sourceIsAsset)
-            {
-                // Unity 2020.2以降、プレハブアセットを直接取り扱えなくなった問題の回避
-                // <https://issuetracker.unity3d.com/issues/animator-dot-getbonetransform-doesnt-get-bones-transform-from-prefab>
-                source = PrefabUtility.LoadPrefabContents(AssetDatabase.GetAssetPath(source));
-
-            }
-
             var sourceSkeletonBones = BoneMapper.GetAllSkeletonBones(avatar: source);
             if (components.Contains(typeof(VRMFirstPerson)))
             {
@@ -98,11 +89,6 @@ namespace Esperecyan.UniVRMExtensions
             {
                 PrefabUtility.ApplyPrefabInstance(destination, InteractionMode.AutomatedAction);
                 UnityEngine.Object.DestroyImmediate(destination);
-            }
-
-            if (sourceIsAsset)
-            {
-                PrefabUtility.UnloadPrefabContents(source);
             }
         }
 

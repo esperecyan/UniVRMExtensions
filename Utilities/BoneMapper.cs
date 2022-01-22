@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using UniGLTF;
 
 namespace Esperecyan.UniVRMExtensions.Utilities
@@ -18,8 +19,15 @@ namespace Esperecyan.UniVRMExtensions.Utilities
         /// <returns></returns>
         internal static Dictionary<HumanBodyBones, Transform> GetAllSkeletonBones(GameObject avatar)
         {
-            var animator = avatar.GetComponent<Animator>();
-            return Enum.GetValues(typeof(HumanBodyBones)).Cast<HumanBodyBones>()
+            var instance = avatar;
+            var isAsset = PrefabUtility.IsPartOfPrefabAsset(avatar);
+            if (isAsset)
+            {
+                instance = PrefabUtility.LoadPrefabContents(AssetDatabase.GetAssetPath(avatar));
+            }
+
+            var animator = instance.GetComponent<Animator>();
+            var bones = Enum.GetValues(typeof(HumanBodyBones)).Cast<HumanBodyBones>()
                 .Select(bone => (
                     bone,
                     transform: bone != HumanBodyBones.LastBone ? animator.GetBoneTransform(bone) : null
@@ -29,6 +37,23 @@ namespace Esperecyan.UniVRMExtensions.Utilities
                     boneTransformPair => boneTransformPair.bone,
                     boneTransformPair => boneTransformPair.transform
                 );
+
+            if (!isAsset)
+            {
+                return bones;
+            }
+
+            var bonePathPairs = bones.ToDictionary(
+                boneTransformPair => boneTransformPair.Key,
+                boneTransformPair => boneTransformPair.Value.RelativePathFrom(instance.transform)
+            );
+
+            PrefabUtility.UnloadPrefabContents(instance);
+
+            return bonePathPairs.ToDictionary(
+                bonePathPairs => bonePathPairs.Key,
+                bonePathPairs => avatar.transform.Find(bonePathPairs.Value)
+            );
         }
 
         /// <summary>
