@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using VRM;
 using Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents;
+using SwayingObjectsConverterWizard = Esperecyan.UniVRMExtensions.SwayingObjects.Wizard;
 
 namespace Esperecyan.UniVRMExtensions
 {
@@ -90,6 +91,15 @@ namespace Esperecyan.UniVRMExtensions
         private static void OpenWizard()
         {
             Wizard.Open();
+        }
+
+        /// <summary>
+        /// 揺れ物の相互変換ダイアログを開きます。
+        /// </summary>
+        [MenuItem("VRM0/Open Swaying Objects Converter Wizard", false, MenuItems.Priority + 2)]
+        private static void OpenSwayingObjectsConverterWizard()
+        {
+            SwayingObjectsConverterWizard.Open();
         }
 
         [InitializeOnLoadMethod]

@@ -148,10 +148,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                 var colliderGroup = destinationBone.GetComponents<VRMSpringBoneColliderGroup>().Last();
                 foreach (var collider in colliderGroup.Colliders)
                 {
-                    collider.Offset = destinationBone.InverseTransformPoint(
-                        sourceBone.TransformPoint(collider.Offset) - sourceBone.transform.position
-                            + destinationBone.position
-                    );
+                    collider.Offset = TransformUtilities.CalculateOffset(destinationBone, collider.Offset, sourceBone);
                 }
 
             }

@@ -51,8 +51,8 @@ namespace Esperecyan.UniVRMExtensions.Utilities
             PrefabUtility.UnloadPrefabContents(instance);
 
             return bonePathPairs.ToDictionary(
-                bonePathPairs => bonePathPairs.Key,
-                bonePathPairs => avatar.transform.Find(bonePathPairs.Value)
+                bonePathPair => bonePathPair.Key,
+                bonePathPair => avatar.transform.Find(bonePathPair.Value)
             );
         }
 
