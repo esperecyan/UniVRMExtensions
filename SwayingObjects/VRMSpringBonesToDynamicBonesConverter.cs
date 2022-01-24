@@ -126,7 +126,11 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                                         collider.Offset,
                                         destinationBone
                                     );
-                                    dynamicBoneCollider.m_Radius = collider.Radius;
+                                    dynamicBoneCollider.m_Radius = TransformUtilities.CalculateDistance(
+                                        sourceColliderGroup.transform,
+                                        collider.Radius,
+                                        destinationBone
+                                    );
                                     return dynamicBoneCollider;
                                 }).ToList();
                             }
