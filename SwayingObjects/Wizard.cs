@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UniGLTF;
-using Esperecyan.UniVRMExtensions.Utilities;
 using static Esperecyan.UniVRMExtensions.Utilities.Gettext;
 using static Esperecyan.UniVRMExtensions.SwayingObjects.DynamicBones;
 
@@ -40,8 +39,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         /// </summary>
         internal static void Open()
         {
-            ScriptableWizard
-                .DisplayWizard<Wizard>(MenuItems.Name + "-" + MenuItems.Version, Gettext._("Convert"));
+            ScriptableWizard.DisplayWizard<Wizard>(MenuItems.Name + "-" + MenuItems.Version, _("Convert"));
         }
 
         protected override bool DrawWizardGUI()
@@ -249,8 +247,8 @@ public class Example : MonoBehaviour
 
             EditorUtility.DisplayDialog(
                 MenuItems.Name + "-" + MenuItems.Version,
-                Gettext._("変換が完了しました。"),
-                Gettext._("OK")
+                _("The conversion is completed."),
+                _("OK")
             );
         }
     }

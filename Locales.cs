@@ -25,7 +25,6 @@ namespace Esperecyan.UniVRMExtensions
                     { "Settings copying and pasting is completed.", "設定のコピー&ペーストが完了しました。" },
                     { "OK", "OK" },
 
-                    { "変換", "Convert" },
                     { "The Dynamic Bone asset has not been imported.", "Dynamic Boneアセットがインポートされていません。" },
                     { "Conversion source", "変換元" },
                     { "Conversion destination", "変換先" },
@@ -40,6 +39,7 @@ namespace Esperecyan.UniVRMExtensions
                     { "Specify a C# script file that contains a static method named “Converter” as shown below.",
                         "以下のような「Converter」という名前のstaticメソッドを含むC#スクリプトファイルを指定します。" },
                     { "The destination contains missing scripts.", "変換先にmissing scriptが含まれています。" },
+                    { "Convert", "変換" },
                     { "No corresponding bone found in the conversion destination", "変換先に対応するボーンが見つかりません" },
                     { "Inside colliders cannot be converted", "インサイドコライダーは変換できません" },
                     { "The conversion is completed.", "変換が完了しました。" },
