@@ -31,15 +31,16 @@ namespace Esperecyan.UniVRMExtensions.Utilities
         /// </summary>
         /// <param name="sourceTransform">X方向のスケールを利用します。</param>
         /// <param name="distance">長さ。</param>
-        /// <param name="destinationTransform">X方向のスケールを利用します。</param>
+        /// <param name="destinationTransform">X方向のスケールを利用します。指定しなかった場合は正規化します。</param>
         /// <returns></returns>
         internal static float CalculateDistance(
             Transform sourceTransform,
             float distance,
-            Transform destinationTransform
+            Transform destinationTransform = null
         )
         {
-            return distance * sourceTransform.lossyScale.x / destinationTransform.lossyScale.x;
+            return distance * sourceTransform.lossyScale.x
+                / (destinationTransform != null ? destinationTransform.lossyScale.x : 1);
         }
     }
 }

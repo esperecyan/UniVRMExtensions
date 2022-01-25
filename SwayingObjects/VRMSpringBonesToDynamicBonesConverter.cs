@@ -182,7 +182,11 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         }
 
                         dynamicBone.m_Gravity = vrmSpringBone.m_gravityDir * vrmSpringBone.m_gravityPower;
-                        dynamicBone.m_Radius = vrmSpringBone.m_hitRadius;
+                        dynamicBone.m_Radius = TransformUtilities.CalculateDistance(
+                            vrmSpringBone.transform,
+                            vrmSpringBone.m_hitRadius,
+                            converter.Secondary.transform
+                        );
                         if (dynamicBoneColliderGroups != null)
                         {
                             dynamic colliders = Activator.CreateInstance(DynamicBoneColliderBaseListType);

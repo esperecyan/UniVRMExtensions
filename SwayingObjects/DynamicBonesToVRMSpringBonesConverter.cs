@@ -265,8 +265,8 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         gravity.y,
                         gravity.z,
                         parameters.DragForce,
-                        (float)dynamicBone.m_Radius,
-                    }.Select(parameter => parameter.ToString("F2"))
+                        TransformUtilities.CalculateDistance(dynamicBone.transform, dynamicBone.m_Radius),
+                }.Select(parameter => parameter.ToString("F2"))
                     .Concat(destinationColliderGroups.Select(colliderGroup =>
                         colliderGroup.transform.RelativePathFrom(converter.Destination.transform)))
                     ));
@@ -289,7 +289,11 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                     // 変換先の対応するボーンを取得
                     .Select(sourceBone => converter.FindCorrespondingBone(sourceBone, "VRMSpringBone → DynamicBone"))
                     .ToList();
-                vrmSpringBone.m_hitRadius = dynamicBone.dynamicBone.m_Radius;
+                vrmSpringBone.m_hitRadius = TransformUtilities.CalculateDistance(
+                    dynamicBone.dynamicBone.transform,
+                    dynamicBone.dynamicBone.m_Radius,
+                    converter.Secondary.transform
+                );
                 vrmSpringBone.ColliderGroups = dynamicBone.destinationColliderGroups.ToArray();
             }
         }
