@@ -141,6 +141,33 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 EditorGUILayout.HelpBox(_("The destination contains missing scripts."), MessageType.Error);
                 this.isValid = false;
             }
+            if (this.destination != null && this.overwriteMode == OverwriteMode.Replace)
+            {
+                string existedComponentName = null;
+                switch (this.direction)
+                {
+                    case Direction.DynamicBonesToVRMSpringBones:
+                        if (Wizard.ContainsVRMSpringBone(this.destination))
+                        {
+                            existedComponentName = "VRMSpringBone/VRMSpringBoneColliderGroup";
+                        }
+                        break;
+                    case Direction.VRMSpringBonesToDynamicBones:
+                        if (Wizard.ContainsDynamicBone(this.destination))
+                        {
+                            existedComponentName = "DynamicBone/DynamicBoneCollider";
+                        }
+                        break;
+                }
+                if (existedComponentName != null)
+                {
+                    EditorGUILayout.HelpBox(
+                        string.Format(_("{0} はすでに変換先に存在します。同コンポーネントは削除されます。"), existedComponentName),
+                        MessageType.Warning
+                    );
+                    this.isValid = false;
+                }
+            }
 
             EditorGUILayout.HelpBox(
                 _("The same object can be specified as the source and destination."),
