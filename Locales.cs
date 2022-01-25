@@ -27,6 +27,7 @@ namespace Esperecyan.UniVRMExtensions
 
                     { "The Dynamic Bone asset has not been imported.", "Dynamic Boneアセットがインポートされていません。" },
                     { "Conversion source", "変換元" },
+                    { "{0} does not exist in Conversion source.", "{0} は変換元に存在しません。" },
                     { "Conversion destination", "変換先" },
                     { "The same object can be specified as the source and destination.",
                         "変換元と変換先には同じオブジェクトを指定することができます。" },

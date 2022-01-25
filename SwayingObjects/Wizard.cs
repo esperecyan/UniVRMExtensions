@@ -6,6 +6,7 @@ using UnityEditor;
 using UniGLTF;
 using static Esperecyan.UniVRMExtensions.Utilities.Gettext;
 using static Esperecyan.UniVRMExtensions.SwayingObjects.DynamicBones;
+using VRM;
 
 namespace Esperecyan.UniVRMExtensions.SwayingObjects
 {
@@ -33,6 +34,29 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             vrmSpringBoneToDynamicBoneParametersConverter;
         private DynamicBonesToVRMSpringBonesConverter.ParametersConverter
             dynamicBoneToVRMSpringBoneToParametersConverter;
+
+        /// <summary>
+        /// 指定されたオブジェクトが<see cref="DynamicBone"/>、または<see cref="DynamicBoneCollider"/>を含んでいれば、<c>true</c>を返します。
+        /// </summary>
+        /// <param name="animator"></param>
+        /// <returns></returns>
+        private static bool ContainsDynamicBone(Animator animator)
+        {
+            return animator.GetComponentsInChildren<Component>(includeInactive: true).Cast<Component>()
+                .Any(component => component != null // missing objectの回避
+                    && new[] { "DynamicBone", "DynamicBoneCollider" }.Contains(component.GetType().FullName));
+        }
+
+        /// <summary>
+        /// 指定されたオブジェクトが<see cref="VRMSpringBone"/>、または<see cref="VRMSpringBoneColliderGroup"/>を含んでいれば、<c>true</c>を返します。
+        /// </summary>
+        /// <param name="animator"></param>
+        /// <returns></returns>
+        private static bool ContainsVRMSpringBone(Animator animator)
+        {
+            return animator.GetComponentsInChildren<VRMSpringBone>(includeInactive: true).Length > 0
+                || animator.GetComponentsInChildren<VRMSpringBoneColliderGroup>(includeInactive: true).Length > 0;
+        }
 
         /// <summary>
         /// ダイアログを開きます。
@@ -76,6 +100,33 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             if (!this.ReportRootObjectValidation(this.destination, _("Conversion source")))
             {
                 this.isValid = false;
+            }
+            if (this.source != null)
+            {
+                string unexistedComponentName = null;
+                switch (this.direction)
+                {
+                    case Direction.DynamicBonesToVRMSpringBones:
+                        if (!Wizard.ContainsDynamicBone(this.source))
+                        {
+                            unexistedComponentName = "DynamicBone/DynamicBoneCollider";
+                        }
+                        break;
+                    case Direction.VRMSpringBonesToDynamicBones:
+                        if (!Wizard.ContainsVRMSpringBone(this.source))
+                        {
+                            unexistedComponentName = "VRMSpringBone/VRMSpringBoneColliderGroup";
+                        }
+                        break;
+                }
+                if (unexistedComponentName != null)
+                {
+                    EditorGUILayout.HelpBox(
+                        string.Format(_("{0} does not exist in Conversion source."), unexistedComponentName),
+                        MessageType.Error
+                    );
+                    this.isValid = false;
+                }
             }
 
             this.destination = (Animator)EditorGUILayout
