@@ -192,8 +192,8 @@ public class Example : MonoBehaviour
 {" + code + "\n}", MessageType.None);
 
             foreach (var (label, animator) in new Dictionary<string, Animator> {
-                { _("Source"), this.source },
-                { _("Destination"), this.destination },
+                { _("Conversion source"), this.source },
+                { _("Conversion destination"), this.destination },
             })
             {
                 if (animator == null)
