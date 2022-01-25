@@ -73,9 +73,23 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
 
             this.source = (Animator)EditorGUILayout
                 .ObjectField(_("Conversion source"), this.source, typeof(Animator), allowSceneObjects: true);
+            if (!this.ReportRootObjectValidation(this.destination, _("Conversion source")))
+            {
+                this.isValid = false;
+            }
 
             this.destination = (Animator)EditorGUILayout
                 .ObjectField(_("Conversion destination"), this.destination, typeof(Animator), allowSceneObjects: true);
+            if (!this.ReportRootObjectValidation(this.destination, _("Conversion destination")))
+            {
+                this.isValid = false;
+            }
+            if (this.destination != null
+                && GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(this.destination.gameObject) > 0)
+            {
+                EditorGUILayout.HelpBox(_("The destination contains missing scripts."), MessageType.Error);
+                this.isValid = false;
+            }
 
             EditorGUILayout.HelpBox(
                 _("The same object can be specified as the source and destination."),
@@ -191,31 +205,27 @@ using Esperecyan.UniVRMExtensions.SwayingObjects;
 public class Example : MonoBehaviour
 {" + code + "\n}", MessageType.None);
 
-            foreach (var (label, animator) in new Dictionary<string, Animator> {
-                { _("Conversion source"), this.source },
-                { _("Conversion destination"), this.destination },
-            })
-            {
-                if (animator == null)
-                {
-                    this.isValid = false;
-                    continue;
-                }
+            return true;
+        }
 
-                var transform = animator.transform;
-                if (transform != transform.root)
-                {
-                    EditorGUILayout.HelpBox(string.Format(_("“{0}” is not root object."), label), MessageType.Error);
-                    this.isValid = false;
-                    continue;
-                }
+        /// <summary>
+        /// 指定されたオブジェクトがルートオブジェクトであるかの確認と、エラー表示を行います。
+        /// </summary>
+        /// <param name="animator"></param>
+        /// <param name="label"></param>
+        /// <returns>バリデーションエラーがなければ <c>true</c>。</returns>
+        private bool ReportRootObjectValidation(Animator animator, string label)
+        {
+            if (animator == null)
+            {
+                return false;
             }
 
-            if (this.destination != null
-                && GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(this.destination.gameObject) > 0)
+            var transform = animator.transform;
+            if (transform != transform.root)
             {
-                EditorGUILayout.HelpBox(_("The destination contains missing scripts."), MessageType.Error);
-                this.isValid = false;
+                EditorGUILayout.HelpBox(string.Format(_("“{0}” is not root object."), label), MessageType.Error);
+                return false;
             }
 
             return true;
