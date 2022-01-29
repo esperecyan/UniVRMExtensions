@@ -161,10 +161,10 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 }
                 if (existedComponentName != null)
                 {
-                    EditorGUILayout.HelpBox(
-                        string.Format(_("{0} はすでに変換先に存在します。同コンポーネントは削除されます。"), existedComponentName),
-                        MessageType.Warning
-                    );
+                    EditorGUILayout.HelpBox(string.Format(
+                        _("{0} already exists in Conversion destination. This components will be removed."),
+                        existedComponentName
+                    ), MessageType.Warning);
                     this.isValid = false;
                 }
             }
