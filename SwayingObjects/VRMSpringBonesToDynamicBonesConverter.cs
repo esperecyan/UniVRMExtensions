@@ -71,23 +71,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             {
                 if (overwriteMode == OverwriteMode.Replace)
                 {
-                    foreach (var component
-                        in converter.Destination.GetComponentsInChildren<Component>(includeInactive: true))
-                    {
-                        if (!new[] { "DynamicBone", "DynamicBoneCollider" }.Contains(component.GetType().FullName))
-                        {
-                            continue;
-                        }
-
-                        if (converter.DestinationIsAsset)
-                        {
-                            Object.DestroyImmediate(component);
-                        }
-                        else
-                        {
-                            Undo.DestroyObjectImmediate(component);
-                        }
-                    }
+                    Utilities.DestroyDynamicBones(converter.Destination, converter.DestinationIsAsset);
                 }
 
                 // 変換元の VRMSpringBoneColliderGroup を基に、変換先へ DynamicBoneCollider を設定

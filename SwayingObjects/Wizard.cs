@@ -27,6 +27,8 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         private Direction direction = Direction.DynamicBonesToVRMSpringBones;
         private Animator source = null;
         private Animator destination = null;
+        private bool sourceEqualsDestination = false;
+        private bool removeSourceSwayingObjectsWhenSourceEqualsDestination = true;
         private OverwriteMode overwriteMode = OverwriteMode.Replace;
         private bool ignoreColliders = false;
         private MonoScript callbackFunction = null;
@@ -169,10 +171,22 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 }
             }
 
-            EditorGUILayout.HelpBox(
-                _("The same object can be specified as the source and destination."),
-                MessageType.None
-            );
+            this.sourceEqualsDestination = this.source != null && this.destination != null
+                && this.source.gameObject == this.destination.gameObject;
+            if (this.sourceEqualsDestination)
+            {
+                this.removeSourceSwayingObjectsWhenSourceEqualsDestination = EditorGUILayout.Toggle(
+                    _("Remove swaying objects from Convertion source"),
+                    this.removeSourceSwayingObjectsWhenSourceEqualsDestination
+                );
+            }
+            else
+            {
+                EditorGUILayout.HelpBox(
+                    _("The same object can be specified as the source and destination."),
+                    MessageType.None
+                );
+            }
 
             this.overwriteMode = (OverwriteMode)EditorGUILayout.Popup(
                 _("Overwrite mode"),
@@ -331,6 +345,57 @@ public class Example : MonoBehaviour
                         this.callbackFunction != null ? this.vrmSpringBoneToDynamicBoneParametersConverter : null
                     );
                     break;
+            }
+
+            if (this.sourceEqualsDestination && this.removeSourceSwayingObjectsWhenSourceEqualsDestination)
+            {
+
+                var source = this.source.gameObject;
+                var sourceIsAsset = PrefabUtility.IsPartOfPrefabAsset(source);
+                int? undoGroupIndex = null;
+                try
+                {
+                    if (sourceIsAsset)
+                    {
+                        source = PrefabUtility.LoadPrefabContents(AssetDatabase.GetAssetPath(source));
+                    }
+                    else
+                    {
+                        Undo.IncrementCurrentGroup();
+                        Undo.SetCurrentGroupName($"Remove Swaying objects from “{source.name}”");
+                    }
+                    undoGroupIndex = Undo.GetCurrentGroup();
+
+                    switch (this.direction)
+                    {
+                        case Direction.DynamicBonesToVRMSpringBones:
+                            Utilities.DestroyDynamicBones(source, sourceIsAsset);
+                            break;
+                        case Direction.VRMSpringBonesToDynamicBones:
+                            Utilities.DestroyVRMSpringBones(source, sourceIsAsset);
+                            Debug.Log(1223);
+                            break;
+                    }
+
+                    if (sourceIsAsset)
+                    {
+                        PrefabUtility.SaveAsPrefabAsset(
+                            source,
+                            PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this.source)
+                        );
+                    }
+                }
+                finally
+                {
+                    if (sourceIsAsset)
+                    {
+                        PrefabUtility.UnloadPrefabContents(source);
+                    }
+                    else
+                    {
+                        Undo.CollapseUndoOperations(undoGroupIndex.Value);
+                    }
+                }
             }
 
             EditorUtility.DisplayDialog(

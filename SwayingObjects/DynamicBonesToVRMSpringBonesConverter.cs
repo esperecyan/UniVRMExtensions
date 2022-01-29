@@ -70,21 +70,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             {
                 if (overwriteMode == OverwriteMode.Replace)
                 {
-                    foreach (var component
-                        in converter.Destination.GetComponentsInChildren<VRMSpringBone>(includeInactive: true)
-                            .Cast<Component>()
-                            .Concat(converter.Destination
-                                .GetComponentsInChildren<VRMSpringBoneColliderGroup>(includeInactive: true)))
-                    {
-                        if (converter.DestinationIsAsset)
-                        {
-                            Object.DestroyImmediate(component);
-                        }
-                        else
-                        {
-                            Undo.DestroyObjectImmediate(component);
-                        }
-                    }
+                    Utilities.DestroyVRMSpringBones(converter.Destination, converter.DestinationIsAsset);
                 }
 
                 if (!ignoreColliders)
