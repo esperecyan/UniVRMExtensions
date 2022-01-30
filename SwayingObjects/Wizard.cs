@@ -175,10 +175,16 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 && this.source.gameObject == this.destination.gameObject;
             if (this.sourceEqualsDestination)
             {
-                this.removeSourceSwayingObjectsWhenSourceEqualsDestination = EditorGUILayout.Toggle(
-                    _("Remove swaying objects from Convertion source"),
-                    this.removeSourceSwayingObjectsWhenSourceEqualsDestination
-                );
+                using (new EditorGUILayout.HorizontalScope(new GUIStyle()
+                {
+                    margin = new RectOffset(left: (int)EditorGUIUtility.labelWidth, 0, 0, 0),
+                }))
+                {
+                    this.removeSourceSwayingObjectsWhenSourceEqualsDestination = EditorGUILayout.ToggleLeft(
+                        _("Remove swaying objects from Convertion source"),
+                        this.removeSourceSwayingObjectsWhenSourceEqualsDestination
+                    );
+                }
             }
             else
             {
@@ -206,12 +212,18 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
 
             this.ignoreColliders = EditorGUILayout.Toggle(_("Ignore colliders"), this.ignoreColliders);
 
-            this.callbackFunction = (MonoScript)EditorGUILayout.ObjectField(
-                _("Parameters conversion algorithm"),
-                this.callbackFunction,
-                typeof(MonoScript),
-                allowSceneObjects: false
-            );
+            EditorGUILayout.PrefixLabel(_("Parameters conversion algorithm"));
+            using (new EditorGUILayout.HorizontalScope(new GUIStyle()
+            {
+                margin = new RectOffset(left: (int)EditorGUIUtility.labelWidth, 0, 0, 0),
+            }))
+            {
+                this.callbackFunction = (MonoScript)EditorGUILayout.ObjectField(
+                    this.callbackFunction,
+                    typeof(MonoScript),
+                    allowSceneObjects: false
+                );
+            }
             if (this.callbackFunction != null)
             {
                 switch (this.direction)
