@@ -181,7 +181,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 }))
                 {
                     this.removeSourceSwayingObjectsWhenSourceEqualsDestination = EditorGUILayout.ToggleLeft(
-                        _("Remove swaying objects from Convertion source"),
+                        _("Remove swaying objects from Conversion source"),
                         this.removeSourceSwayingObjectsWhenSourceEqualsDestination
                     );
                 }

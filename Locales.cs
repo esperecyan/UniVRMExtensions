@@ -33,7 +33,7 @@ namespace Esperecyan.UniVRMExtensions
                     { "Conversion destination", "変換先" },
                     { "The same object can be specified as the source and destination.",
                         "変換元と変換先には同じオブジェクトを指定することができます。" },
-                    { "Remove swaying objects from Convertion source", "変換元の揺れ物を削除" },
+                    { "Remove swaying objects from Conversion source", "変換元の揺れ物を削除" },
                     { "Overwrite mode", "上書きモード" },
                     { "Remove all swaying objects from the destination before conversion", "変換前に、変換先の揺れ物をすべて削除" },
                     { "Append", "追加" },
