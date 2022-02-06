@@ -212,7 +212,10 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
 
             this.ignoreColliders = EditorGUILayout.Toggle(_("Ignore colliders"), this.ignoreColliders);
 
+            var previousWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = EditorGUIUtility.currentViewWidth;
             EditorGUILayout.PrefixLabel(_("Parameters conversion algorithm"));
+            EditorGUIUtility.labelWidth = previousWidth;
             using (new EditorGUILayout.HorizontalScope(new GUIStyle()
             {
                 margin = new RectOffset(left: (int)EditorGUIUtility.labelWidth, 0, 0, 0),
