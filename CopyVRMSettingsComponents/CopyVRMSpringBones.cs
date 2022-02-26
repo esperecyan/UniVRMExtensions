@@ -44,7 +44,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
                 );
             }
 
-            CopyVRMSpringBones.CopySpringBoneColliderGroupForVirtualCast(source: source, destination: destination);
+            CopyVRMSpringBones.CopySpringBoneColliderGroupForVirtualCast(source, destination, sourceSkeletonBones);
         }
 
         /// <summary>
@@ -159,14 +159,18 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
         /// </summary>
         /// <param name="source"></param>
         /// <param name="destination"></param>
-        private static void CopySpringBoneColliderGroupForVirtualCast(GameObject source, GameObject destination)
+        /// <param name="sourceSkeletonBones"></param>
+        private static void CopySpringBoneColliderGroupForVirtualCast(
+            GameObject source,
+            GameObject destination,
+            Dictionary<HumanBodyBones, Transform> sourceSkeletonBones
+        )
         {
-            var sourceAnimator = source.GetComponent<Animator>();
             var destinationAnimator = destination.GetComponent<Animator>();
             foreach (var humanoidBone in new[] { HumanBodyBones.LeftHand, HumanBodyBones.RightHand })
             {
                 CopyVRMSpringBones.CopySpringBoneColliderGroups(
-                    sourceBone: sourceAnimator.GetBoneTransform(humanoidBone),
+                    sourceBone: sourceSkeletonBones[humanoidBone],
                     destinationBone: destinationAnimator.GetBoneTransform(humanoidBone)
                 );
             }
