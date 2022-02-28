@@ -9,7 +9,7 @@
 	"license": "MIT",
 	"licensesUrl": "https://github.com/esperecyan/UniVRMExtensions/blob/master/LICENSE.md",
 	"dependencies": {
-		"com.vrmc.univrm": "0.96.1"
+		"com.vrmc.univrm": "0.95.1"
 	},
 	"author": {
 		"name": "100の人",
