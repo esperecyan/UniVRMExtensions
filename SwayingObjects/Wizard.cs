@@ -167,7 +167,6 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         _("{0} already exists in Conversion destination. This components will be removed."),
                         existedComponentName
                     ), MessageType.Warning);
-                    this.isValid = false;
                 }
             }
 
