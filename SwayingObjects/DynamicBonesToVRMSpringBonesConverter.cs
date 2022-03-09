@@ -108,7 +108,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 // 変換先の対応するボーンを取得
                 var destinationBone = converter.FindCorrespondingBone(
                     sourceColliders.Key,
-                    "VRMSpringBoneColliderGroup → DynamicBoneCollider"
+                    "DynamicBoneCollider → VRMSpringBoneColliderGroup"
                 );
                 if (destinationBone == null)
                 {
@@ -273,7 +273,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                     .Where(sourceBone => sourceBone != null && sourceBone.IsChildOf(converter.Source.transform))
                     .Distinct()
                     // 変換先の対応するボーンを取得
-                    .Select(sourceBone => converter.FindCorrespondingBone(sourceBone, "VRMSpringBone → DynamicBone"))
+                    .Select(sourceBone => converter.FindCorrespondingBone(sourceBone, "DynamicBone → VRMSpringBone"))
                     .ToList();
                 vrmSpringBone.m_hitRadius = TransformUtilities.CalculateDistance(
                     dynamicBone.dynamicBone.transform,
