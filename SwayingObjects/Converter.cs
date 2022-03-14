@@ -9,7 +9,7 @@ using static Esperecyan.UniVRMExtensions.Utilities.Gettext;
 namespace Esperecyan.UniVRMExtensions.SwayingObjects
 {
     /// <summary>
-    /// <see cref="VRMSpringBonesToDynamicBonesConverter"/> と <see cref="VRMSpringBonesToDynamicBonesConverter"/> の共通処理。
+    /// 共通処理。
     /// </summary>
     internal class Converter : IDisposable
     {
