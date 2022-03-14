@@ -32,10 +32,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         private OverwriteMode overwriteMode = OverwriteMode.Replace;
         private bool ignoreColliders = false;
         private MonoScript callbackFunction = null;
-        private VRMSpringBonesToDynamicBonesConverter.ParametersConverter
-            vrmSpringBoneToDynamicBoneParametersConverter;
-        private DynamicBonesToVRMSpringBonesConverter.ParametersConverter
-            dynamicBoneToVRMSpringBoneToParametersConverter;
+        private Delegate parametersConverter;
 
         /// <summary>
         /// 指定されたオブジェクトが<see cref="DynamicBone"/>、または<see cref="DynamicBoneCollider"/>を含んでいれば、<c>true</c>を返します。
@@ -231,41 +228,32 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 switch (this.direction)
                 {
                     case Direction.DynamicBonesToVRMSpringBones:
-                        this.dynamicBoneToVRMSpringBoneToParametersConverter
-                            = (DynamicBonesToVRMSpringBonesConverter.ParametersConverter)Delegate.CreateDelegate(
+                        this.parametersConverter = Delegate.CreateDelegate(
                                 type: typeof(DynamicBonesToVRMSpringBonesConverter.ParametersConverter),
                                 target: this.callbackFunction,
                                 method: "Converter",
                                 ignoreCase: false,
                                 throwOnBindFailure: false
                             );
-                        if (this.dynamicBoneToVRMSpringBoneToParametersConverter == null)
-                        {
-                            EditorGUILayout.HelpBox(
-                                _("There is no “Convert” static method with matching parameters."),
-                                MessageType.Error
-                            );
-                            this.isValid = false;
-                        }
                         break;
                     case Direction.VRMSpringBonesToDynamicBones:
-                        this.vrmSpringBoneToDynamicBoneParametersConverter
-                            = (VRMSpringBonesToDynamicBonesConverter.ParametersConverter)Delegate.CreateDelegate(
-                                type: typeof(VRMSpringBonesToDynamicBonesConverter.ParametersConverter),
+                        this.parametersConverter = Delegate.CreateDelegate(
+                            type: typeof(VRMSpringBonesToDynamicBonesConverter.ParametersConverter),
                                 target: this.callbackFunction,
                                 method: "Converter",
                                 ignoreCase: false,
                                 throwOnBindFailure: false
                             );
-                        if (this.vrmSpringBoneToDynamicBoneParametersConverter == null)
+                        break;
+                }
+
+                if (this.parametersConverter == null)
                         {
                             EditorGUILayout.HelpBox(
-                                _("There is no “Convert” method with matching parameters."),
+                        _("There is no “Convert” static method with matching parameters."),
                                 MessageType.Error
                             );
                             this.isValid = false;
-                        }
-                        break;
                 }
             }
             var code = "";
