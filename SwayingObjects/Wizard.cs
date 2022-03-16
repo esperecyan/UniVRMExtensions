@@ -375,7 +375,6 @@ public class Example : MonoBehaviour
                             break;
                         case Direction.VRMSpringBonesToDynamicBones:
                             Utilities.DestroyVRMSpringBones(source, sourceIsAsset);
-                            Debug.Log(1223);
                             break;
                     }
 
