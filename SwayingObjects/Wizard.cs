@@ -335,7 +335,7 @@ public class Example : MonoBehaviour
                         this.destination,
                         this.overwriteMode,
                         this.ignoreColliders,
-                        this.callbackFunction != null ? this.dynamicBoneToVRMSpringBoneToParametersConverter : null
+                        (DynamicBonesToVRMSpringBonesConverter.ParametersConverter)this.parametersConverter
                     );
                     break;
                 case Direction.VRMSpringBonesToDynamicBones:
@@ -344,7 +344,7 @@ public class Example : MonoBehaviour
                         this.destination,
                         this.overwriteMode,
                         this.ignoreColliders,
-                        this.callbackFunction != null ? this.vrmSpringBoneToDynamicBoneParametersConverter : null
+                        (VRMSpringBonesToDynamicBonesConverter.ParametersConverter)this.parametersConverter
                     );
                     break;
             }
