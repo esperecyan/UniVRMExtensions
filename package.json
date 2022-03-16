@@ -9,7 +9,7 @@
 	"license": "MIT",
 	"licensesUrl": "https://github.com/esperecyan/UniVRMExtensions/blob/master/LICENSE.md",
 	"dependencies": {
-		"com.vrmc.univrm": "0.96.2"
+		"com.vrmc.univrm": "0.97.0"
 	},
 	"Other Dependencies": {
 		"Dynamic Bone": "1.2.2"
