@@ -41,13 +41,17 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
         [SerializeField]
         private bool vrmSpringBone = true;
 
+        private string version;
+
         /// <summary>
         /// ダイアログを開きます。
         /// </summary>
-        internal static void Open()
+        internal static async void Open()
         {
-            ScriptableWizard
-                .DisplayWizard<Wizard>(MenuItems.Name + "-" + MenuItems.Version, Gettext._("Copy and Paste"));
+            var version = await MenuItems.GetVersion();
+            var wizard
+                = ScriptableWizard.DisplayWizard<Wizard>(MenuItems.Name + "-" + version, Gettext._("Copy and Paste"));
+            wizard.version = version;
         }
 
         protected override bool DrawWizardGUI()
@@ -171,7 +175,7 @@ namespace Esperecyan.UniVRMExtensions.CopyVRMSettingsComponents
             );
 
             EditorUtility.DisplayDialog(
-                MenuItems.Name + "-" + MenuItems.Version,
+                MenuItems.Name + "-" + this.version,
                 Gettext._("Settings copying and pasting is completed."),
                 Gettext._("OK")
             );

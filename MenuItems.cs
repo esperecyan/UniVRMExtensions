@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.PackageManager;
@@ -14,11 +15,6 @@ namespace Esperecyan.UniVRMExtensions
     public static class MenuItems
     {
         /// <summary>
-        /// 当エディタ拡張のバージョン。
-        /// </summary>
-        public static string Version { get; private set; }
-
-        /// <summary>
         /// 当エディタ拡張の名称。
         /// </summary>
         internal const string Name = "UniVRMExtensions";
@@ -28,15 +24,42 @@ namespace Esperecyan.UniVRMExtensions
         /// </summary>
         private const int Priority = 1100;
 
+        /// <summary>
+        /// 当エディタ拡張のバージョンを取得します。
+        /// </summary>
+        /// <returns></returns>
+        public static Task<string> GetVersion()
+        {
+            var request = Client.List(offlineMode: true, includeIndirectDependencies: true);
+            var taskCompleteSource = new TaskCompletionSource<string>();
+            void Handler()
+            {
+                if (!request.IsCompleted)
+                {
+                    return;
+                }
+
+                EditorApplication.update -= Handler;
+
+                taskCompleteSource.SetResult(
+                    request.Result.FirstOrDefault(info => info.name == "jp.pokemori.univrm-extensions")?.version
+                );
+            }
+
+            EditorApplication.update += Handler;
+
+            return taskCompleteSource.Task;
+        }
+
         [MenuItem("VRM0/プレハブバリアントを作ってVRMプレハブ化", false, MenuItems.Priority)]
-        private static void Initialize()
+        private static async void Initialize()
         {
             var gameObject = Selection.activeObject as GameObject;
             var animator = gameObject.GetComponent<Animator>();
             if (animator == null || !animator.isHuman)
             {
                 EditorUtility.DisplayDialog(
-                    MenuItems.Name + "-" + MenuItems.Version,
+                    MenuItems.Name + "-" + await MenuItems.GetVersion(),
                     "HumanoidのAnimatorコンポーネントがアタッチされたGameObjectを選択した状態で実行してください。",
                     "OK"
                 );
@@ -46,7 +69,7 @@ namespace Esperecyan.UniVRMExtensions
             if (gameObject.GetComponent<VRMMeta>() != null)
             {
                 EditorUtility.DisplayDialog(
-                    MenuItems.Name + "-" + MenuItems.Version,
+                    MenuItems.Name + "-" + await MenuItems.GetVersion(),
                     "選択中のアバターはVRMプレハブです。",
                     "OK"
                 );
@@ -58,7 +81,7 @@ namespace Esperecyan.UniVRMExtensions
             VRMInitializer.Initialize(path);
 
             EditorUtility.DisplayDialog(
-                MenuItems.Name + "-" + MenuItems.Version,
+                MenuItems.Name + "-" + await MenuItems.GetVersion(),
                 $"「{path}」へVRMプレハブを生成しました。",
                 "OK"
             );
@@ -90,26 +113,6 @@ namespace Esperecyan.UniVRMExtensions
         private static void OpenSwayingObjectsConverterWizard()
         {
             SwayingObjectsConverterWizard.Open();
-        }
-
-        [InitializeOnLoadMethod]
-        private static void LoadVersion()
-        {
-            var request = Client.List(offlineMode: true, includeIndirectDependencies: true);
-            void Handler()
-            {
-                if (!request.IsCompleted)
-                {
-                    return;
-                }
-
-                EditorApplication.update -= Handler;
-
-                MenuItems.Version
-                    = request.Result.FirstOrDefault(info => info.name == "jp.pokemori.univrm-extensions")?.version;
-            }
-
-            EditorApplication.update += Handler;
         }
     }
 }

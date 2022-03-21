@@ -24,6 +24,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             VRMSpringBonesToDynamicBones,
         }
 
+        private string version;
         private Direction direction = Direction.DynamicBonesToVRMSpringBones;
         private Animator source = null;
         private Animator destination = null;
@@ -60,9 +61,11 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         /// <summary>
         /// ダイアログを開きます。
         /// </summary>
-        internal static void Open()
+        internal static async void Open()
         {
-            ScriptableWizard.DisplayWizard<Wizard>(MenuItems.Name + "-" + MenuItems.Version, _("Convert"));
+            var version = await MenuItems.GetVersion();
+            var wizard = ScriptableWizard.DisplayWizard<Wizard>(MenuItems.Name + "-" + version, _("Convert"));
+            wizard.version = version;
         }
 
         protected override bool DrawWizardGUI()
@@ -325,7 +328,7 @@ public class Example : MonoBehaviour
             return true;
         }
 
-        private void OnWizardCreate()
+        private async void OnWizardCreate()
         {
             switch (this.direction)
             {
@@ -400,7 +403,7 @@ public class Example : MonoBehaviour
             }
 
             EditorUtility.DisplayDialog(
-                MenuItems.Name + "-" + MenuItems.Version,
+                MenuItems.Name + "-" + await MenuItems.GetVersion(),
                 _("The conversion is completed."),
                 _("OK")
             );
