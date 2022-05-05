@@ -126,6 +126,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                                         collider.Radius,
                                         destinationBone
                                     );
+                                    vrcPhysBoneCollider.bonesAsSpheres = true;
                                     return vrcPhysBoneCollider;
                                 }).ToList();
                             }
