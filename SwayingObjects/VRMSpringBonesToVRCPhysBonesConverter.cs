@@ -86,6 +86,8 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 {
                     var objectsHavingUsedColliderGroup = converter.Source.GetComponentsInChildren<VRMSpringBone>()
                         .SelectMany(springBone => springBone.ColliderGroups)
+                        // 手のボーンを除外
+                        .Where(colliderGroup => !converter.IsHandBone(colliderGroup.transform))
                         .Select(colliderGroup => colliderGroup.gameObject);
 
                     // キーに VRMSpringBoneColliderGroup、値に対応する VRCPhysBoneCollider のリストを持つジャグ配列。
@@ -194,7 +196,9 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         {
                             vrcPhysBone.colliders = vrmSpringBone.ColliderGroups
 #if VRC_SDK_VRCSDK3
-                                .SelectMany(colliderGroup => vrcPhysBoneColliderGroups[colliderGroup])
+                                .SelectMany(colliderGroup => vrcPhysBoneColliderGroups.ContainsKey(colliderGroup)
+                                    ? vrcPhysBoneColliderGroups[colliderGroup]
+                                    : new List<VRCPhysBoneCollider>())
                                 .Select(collider => (VRCPhysBoneColliderBase)collider)
 #endif
                                 .ToList();

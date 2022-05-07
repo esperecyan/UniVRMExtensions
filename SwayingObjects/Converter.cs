@@ -63,6 +63,24 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             }
         }
 
+        /// <summary>
+        /// 指定したコピー元のボーンがLeftHand、もしくはRightHandなら、<c>true</c> を返します。
+        /// </summary>
+        /// <param name="sourceBone"></param>
+        /// <returns></returns>
+        internal bool IsHandBone(Transform sourceBone)
+        {
+            foreach (var humanoidBodyBone in new[] { HumanBodyBones.LeftHand, HumanBodyBones.RightHand })
+            {
+                if (this.sourceSkeletonBones.ContainsKey(humanoidBodyBone)
+                    && this.sourceSkeletonBones[humanoidBodyBone] == sourceBone)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         internal Transform FindCorrespondingBone(Transform sourceBone, string target)
         {
             var destinationBone = BoneMapper.FindCorrespondingBone(
