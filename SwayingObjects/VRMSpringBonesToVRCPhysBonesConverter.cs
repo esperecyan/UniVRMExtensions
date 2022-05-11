@@ -176,8 +176,16 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         {
                             vrcPhysBone.pull = vrcPhaysBoneParameters.Pull;
                             vrcPhysBone.pullCurve = vrcPhaysBoneParameters.PullCurve;
+#if VRC_SDK_VRCSDK3
+                            vrcPhysBone.integrationType = vrcPhaysBoneParameters.IntegrationType;
+#endif
                             vrcPhysBone.spring = vrcPhaysBoneParameters.Spring;
                             vrcPhysBone.springCurve = vrcPhaysBoneParameters.SpringCurve;
+                            vrcPhysBone.stiffness = vrcPhaysBoneParameters.Stiffness;
+                            vrcPhysBone.stiffnessCurve = vrcPhaysBoneParameters.StiffnessCurve;
+#if VRC_SDK_VRCSDK3
+                            vrcPhysBone.immobileType = vrcPhaysBoneParameters.ImmobileType;
+#endif
                             vrcPhysBone.immobile = vrcPhaysBoneParameters.Immobile;
                             vrcPhysBone.immobileCurve = vrcPhaysBoneParameters.ImmobileCurve;
                             vrcPhysBone.grabMovement = vrcPhaysBoneParameters.GrabMovement;

@@ -213,6 +213,11 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         PullCurve = vrcPhysBone.pullCurve,
                         Spring = vrcPhysBone.spring,
                         SpringCurve = vrcPhysBone.springCurve,
+                        Stiffness = vrcPhysBone.stiffness,
+                        StiffnessCurve = vrcPhysBone.stiffnessCurve,
+#if VRC_SDK_VRCSDK3
+                        ImmobileType = vrcPhysBone.immobileType,
+#endif
                         Immobile = vrcPhysBone.immobile,
                         ImmobileCurve = vrcPhysBone.immobileCurve,
                         GrabMovement = vrcPhysBone.grabMovement,
