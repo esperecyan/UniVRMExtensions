@@ -43,7 +43,12 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             {
                 Pull = vrmSpringBoneParameters.StiffnessForce * 0.075f,
                 Spring = vrmSpringBoneParameters.DragForce * 0.2f,
-                Immobile = 0,
+                Stiffness = 0,
+                // 移動時に揺れないように
+#if VRC_SDK_VRCSDK3
+                ImmobileType = VRCPhysBoneBase.ImmobileType.World,
+#endif
+                Immobile = 1,
             };
         }
 
