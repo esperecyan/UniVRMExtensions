@@ -13,6 +13,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         public readonly VRMMeta VRMMeta;
 
         public BoneInfo(VRMMeta vrmMeta)
+        internal BoneInfo(VRMMeta vrmMeta)
         {
             this.VRMMeta = vrmMeta;
         }
