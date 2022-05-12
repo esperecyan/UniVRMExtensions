@@ -188,7 +188,6 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         /// <param name="parametersConverter"></param>
         private static void SetSpringBones(Converter converter, ParametersConverter parametersConverter)
         {
-            var boneInfo = new BoneInfo(converter.Destination.GetComponent<VRMMeta>());
             foreach (var dynamicBones in converter.Source.GetComponentsInChildren(DynamicBoneType)
                 .Select((dynamic dynamicBone) =>
                 {
@@ -202,7 +201,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         StiffnessDistrib = dynamicBone.m_StiffnessDistrib,
                         Inert = dynamicBone.m_Inert,
                         InertDistrib = dynamicBone.m_InertDistrib,
-                    }, boneInfo);
+                    }, new BoneInfo(converter.Destination.GetComponent<VRMMeta>(), comment: ""));
 
                     var destinationColliderGroups = new List<VRMSpringBoneColliderGroup>();
                     if (dynamicBone.m_Colliders != null)

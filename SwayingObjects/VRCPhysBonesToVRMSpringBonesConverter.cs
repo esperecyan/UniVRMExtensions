@@ -197,7 +197,6 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         /// <param name="parametersConverter"></param>
         private static void SetSpringBones(Converter converter, ParametersConverter parametersConverter)
         {
-            var boneInfo = new BoneInfo(converter.Destination.GetComponent<VRMMeta>());
             foreach (var vrcPhysBones in converter.Source.GetComponentsInChildren<
 #if VRC_SDK_VRCSDK3
                 VRCPhysBone
@@ -223,7 +222,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         GrabMovement = vrcPhysBone.grabMovement,
                         MaxStretch = vrcPhysBone.maxStretch,
                         MaxStretchCurve = vrcPhysBone.maxStretchCurve,
-                    }, boneInfo);
+                    }, new BoneInfo(converter.Destination.GetComponent<VRMMeta>(), vrcPhysBone.parameter));
 
                     var destinationColliderGroups = new List<VRMSpringBoneColliderGroup>();
                     if (vrcPhysBone.colliders != null)

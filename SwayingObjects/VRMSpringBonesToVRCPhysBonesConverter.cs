@@ -148,7 +148,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         StiffnessForce = vrmSpringBone.m_stiffnessForce,
                         DragForce = vrmSpringBone.m_dragForce,
                     };
-                    var boneInfo = new BoneInfo(converter.Source.GetComponent<VRMMeta>());
+                    var boneInfo = new BoneInfo(converter.Source.GetComponent<VRMMeta>(), vrmSpringBone.m_comment);
 
                     foreach (var sourceBone in vrmSpringBone.RootBones)
                     {
