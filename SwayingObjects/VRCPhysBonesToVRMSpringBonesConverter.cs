@@ -89,8 +89,8 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 {
                     VRCPhysBonesToVRMSpringBonesConverter.SetSpringBoneColliderGroups(converter);
                 }
-                VRCPhysBonesToVRMSpringBonesConverter.SetSpringBones(converter, parametersConverter);
                 VRCPhysBonesToVRMSpringBonesConverter.SetSpringBoneColliderGroupsForVirtualCast(converter);
+                VRCPhysBonesToVRMSpringBonesConverter.SetSpringBones(converter, parametersConverter, ignoreColliders);
 
                 converter.SaveAsset();
             }
@@ -195,8 +195,18 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         /// </summary>
         /// <param name="converter"></param>
         /// <param name="parametersConverter"></param>
-        private static void SetSpringBones(Converter converter, ParametersConverter parametersConverter)
+        /// <param name="ignoreColliders"><c>true</c> なら、揺れ物の設定に依らず、揺れ物のコライダー一覧へ手のコライダーを追加しません。</param>
+        private static void SetSpringBones(
+            Converter converter,
+            ParametersConverter parametersConverter,
+            bool ignoreColliders
+        )
         {
+            var destinationAnimator = converter.Destination.GetComponent<Animator>();
+            var destinationHandColliderGroups = new[] { HumanBodyBones.LeftHand, HumanBodyBones.RightHand }
+                .Select(humanBoneId =>
+                    destinationAnimator.GetBoneTransform(humanBoneId).GetComponent<VRMSpringBoneColliderGroup>());
+
             foreach (var vrcPhysBones in converter.Source.GetComponentsInChildren<
 #if VRC_SDK_VRCSDK3
                 VRCPhysBone
@@ -260,6 +270,22 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                             }
 
                             destinationColliderGroups.Add(destinationColliderGroup);
+                        }
+                    }
+
+                    if (!ignoreColliders && (vrcPhysBone.allowCollision || vrcPhysBone.allowGrabbing))
+                    {
+                        // コライダーの変換が有効、かつデフォルトのコライダーとの干渉を許可か掴むのを許可していれば
+                        foreach (var colliderGroup in destinationHandColliderGroups)
+                        {
+                            if (destinationColliderGroups.Contains(colliderGroup))
+                            {
+                                // すでに手のコライダーが含まれていれば
+                                continue;
+                            }
+
+                            // 手のコライダーを揺れ物へ追加
+                            destinationColliderGroups.Add(colliderGroup);
                         }
                     }
 
