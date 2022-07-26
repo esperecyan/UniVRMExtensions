@@ -312,8 +312,13 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 vrmSpringBone.m_stiffnessForce = vrcPhysBone.parameters.StiffnessForce;
                 vrmSpringBone.m_gravityPower = vrcPhysBone.vrcPhysBone.gravity / 0.05f;
                 vrmSpringBone.m_dragForce = vrcPhysBone.parameters.DragForce;
-                vrmSpringBone.RootBones = vrcPhysBones.Select(db => (/* SDK3未インポート用 */Transform)db.vrcPhysBone.rootTransform)
-                    .Where(sourceBone => sourceBone != null && sourceBone.IsChildOf(converter.Source.transform))
+                vrmSpringBone.RootBones = vrcPhysBones
+                    .Select(db => (/* SDK3未インポート用 */Transform)
+                        (db.vrcPhysBone.rootTransform != null ? db.vrcPhysBone.rootTransform : db.vrcPhysBone.transform))
+                        // VRCPhysBoneコンポーネントのRoot Transformが設定されていない場合、
+                        // コンポーネントが設定されたオブジェクトがRoot Transformとして扱われる
+                        // <https://docs.vrchat.com/docs/physbones#transforms>
+                    .Where(sourceBone => sourceBone.IsChildOf(converter.Source.transform))
                     .Distinct()
                     // 変換先の対応するボーンを取得
                     .Select(sourceBone => converter.FindCorrespondingBone(sourceBone, "VRCPhysBone → VRMSpringBone"))
