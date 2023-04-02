@@ -204,7 +204,9 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                             vrmSpringBone.m_hitRadius,
                             converter.Secondary.transform
                         );
-                        vrcPhysBone.allowPosing = false;
+#if VRC_SDK_VRCSDK3
+                        vrcPhysBone.allowPosing = VRCPhysBoneBase.AdvancedBool.False;
+#endif
                         if (vrcPhysBoneColliderGroups != null)
                         {
                             vrcPhysBone.colliders = vrmSpringBone.ColliderGroups

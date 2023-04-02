@@ -273,7 +273,13 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         }
                     }
 
-                    if (!ignoreColliders && (vrcPhysBone.allowCollision || vrcPhysBone.allowGrabbing))
+                    if (
+                        !ignoreColliders
+#if VRC_SDK_VRCSDK3
+                            && (vrcPhysBone.allowCollision != VRCPhysBoneBase.AdvancedBool.False
+                                || vrcPhysBone.allowGrabbing != VRCPhysBoneBase.AdvancedBool.False)
+#endif
+                    )
                     {
                         // コライダーの変換が有効、かつデフォルトのコライダーとの干渉を許可か掴むのを許可していれば
                         foreach (var colliderGroup in destinationHandColliderGroups)
