@@ -51,7 +51,7 @@ namespace Esperecyan.UniVRMExtensions
             return taskCompleteSource.Task;
         }
 
-        [MenuItem("VRM0/プレハブバリアントを作ってVRMプレハブ化", false, MenuItems.Priority)]
+        [MenuItem("VRM0/Create Prefab Valiant VRM", false, MenuItems.Priority)]
         private static async void Initialize()
         {
             var gameObject = Selection.activeObject as GameObject;
@@ -60,7 +60,7 @@ namespace Esperecyan.UniVRMExtensions
             {
                 EditorUtility.DisplayDialog(
                     MenuItems.Name + "-" + await MenuItems.GetVersion(),
-                    "HumanoidのAnimatorコンポーネントがアタッチされたGameObjectを選択した状態で実行してください。",
+                    "Execute with the GameObject to which the Humanoid Animator component is attached.",
                     "OK"
                 );
                 return;
@@ -70,7 +70,7 @@ namespace Esperecyan.UniVRMExtensions
             {
                 EditorUtility.DisplayDialog(
                     MenuItems.Name + "-" + await MenuItems.GetVersion(),
-                    "選択中のアバターはVRMプレハブです。",
+                    "The selected avatar is a VRM prefab.",
                     "OK"
                 );
                 return;
@@ -82,7 +82,7 @@ namespace Esperecyan.UniVRMExtensions
 
             EditorUtility.DisplayDialog(
                 MenuItems.Name + "-" + await MenuItems.GetVersion(),
-                $"「{path}」へVRMプレハブを生成しました。",
+                $"Generated VRM prefab to {path}.",
                 "OK"
             );
         }
@@ -91,7 +91,7 @@ namespace Esperecyan.UniVRMExtensions
         /// 選択されているオブジェクトがGameObject、かつサブアセットではなければ <c>true</c> を返します。
         /// </summary>
         /// <returns></returns>
-        [MenuItem("VRM0/プレハブバリアントを作ってVRMプレハブ化", true)]
+        [MenuItem("VRM0/Create Prefab Valiant VRM", true)]
         private static bool ActiveObjectIsGameObject()
         {
             return Selection.activeObject is GameObject gameObject && !AssetDatabase.IsSubAsset(gameObject);

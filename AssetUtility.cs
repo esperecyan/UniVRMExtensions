@@ -46,7 +46,7 @@ namespace Esperecyan.UniVRMExtensions
             {
                 path = PrefabUtility.GetNearestPrefabInstanceRoot(gameObject) == gameObject
                     ? PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(gameObject)
-                    : $"Assets/{gameObject.name}.prefab";
+                    : $"Assets/Fara/Prefab/VRM/{gameObject.name}.prefab";
             }
             path = AssetDatabase.GenerateUniqueAssetPath(path);
 

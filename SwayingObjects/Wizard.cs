@@ -343,7 +343,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         return new VRMSpringBoneParameters()
         {
             StiffnessForce = vrcPhysBoneParameters.Pull / 0.075f,
-            DragForce = vrcPhysBoneParameters.Spring / 0.2f,
+            DragForce = vrcPhysBoneParameters.Spring / 2f,
         };
     }";
                     break;

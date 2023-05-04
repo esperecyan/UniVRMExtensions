@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEditor;
 using UniGLTF;
 using VRM;
+using VRC.Core;
+using VRC.SDK3.Avatars.Components;
 #if VRC_SDK_VRCSDK3
 using VRC.Dynamics;
 using VRC.SDK3.Dynamics.PhysBone.Components;
@@ -15,7 +17,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
     /// <summary>
     /// VRCPhysBoneをVRMSpringBoneへ変換します。
     /// </summary>
-    public class VRCPhysBonesToVRMSpringBonesConverter
+    public class VRCPhysBonesToVRMSpringBonesConverter : MonoBehaviour
     {
         /// <summary>
         /// 揺れ物のパラメータ変換アルゴリズムの定義を行うコールバック関数。
@@ -42,7 +44,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             return new VRMSpringBoneParameters()
             {
                 StiffnessForce = vrcPhysBoneParameters.Pull / 0.075f,
-                DragForce = vrcPhysBoneParameters.Spring / 0.2f,
+                DragForce = vrcPhysBoneParameters.Spring / 2f,
             };
         }
 
@@ -91,6 +93,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 }
                 VRCPhysBonesToVRMSpringBonesConverter.SetSpringBoneColliderGroupsForVirtualCast(converter);
                 VRCPhysBonesToVRMSpringBonesConverter.SetSpringBones(converter, parametersConverter, ignoreColliders);
+                VRCPhysBonesToVRMSpringBonesConverter.RemoveVRCComponents(converter);
 
                 converter.SaveAsset();
             }
@@ -318,6 +321,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 vrmSpringBone.m_stiffnessForce = vrcPhysBone.parameters.StiffnessForce;
                 vrmSpringBone.m_gravityPower = vrcPhysBone.vrcPhysBone.gravity / 0.05f;
                 vrmSpringBone.m_dragForce = vrcPhysBone.parameters.DragForce;
+                vrmSpringBone.m_center = converter.Secondary.transform; // Centerにsecondaryを設定
                 vrmSpringBone.RootBones = vrcPhysBones
                     .Select(db => (/* SDK3未インポート用 */Transform)
                         (db.vrcPhysBone.rootTransform != null ? db.vrcPhysBone.rootTransform : db.vrcPhysBone.transform))
@@ -360,6 +364,18 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                     }
                 }
             }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="converter"></param>
+        private static void RemoveVRCComponents(Converter converter)
+        {
+            var descriptor = converter.Destination.GetComponent<VRCAvatarDescriptor>();
+            var pipeline = converter.Destination.GetComponent<PipelineManager>();
+            if (descriptor != null) DestroyImmediate(descriptor);
+            if (pipeline != null) DestroyImmediate(pipeline);
         }
     }
 }
