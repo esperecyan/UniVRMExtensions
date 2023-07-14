@@ -178,8 +178,8 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 && sourceCollider.height > sourceCollider.radius * 2)
             {
                 var distance = (sourceCollider.height - sourceCollider.radius * 2) / 2;
-                offsets.Add(offsets[0] + sourceCollider.rotation * new Vector3(0, 0, distance));
-                offsets.Add(offsets[0] + sourceCollider.rotation * new Vector3(0, 0, -distance));
+                offsets.Add(offsets[0] + sourceCollider.rotation * new Vector3(0, distance, 0));
+                offsets.Add(offsets[0] + sourceCollider.rotation * new Vector3(0, -distance, 0));
             }
 
             return offsets.Select(offset => new VRMSpringBoneColliderGroup.SphereCollider
