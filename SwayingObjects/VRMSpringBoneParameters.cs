@@ -1,3 +1,4 @@
+using UnityEngine;
 
 namespace Esperecyan.UniVRMExtensions.SwayingObjects
 {
@@ -7,6 +8,8 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
     public class VRMSpringBoneParameters
     {
         public float StiffnessForce = 1.0f;
+        public float GravityPower = 0.0f;
+        public Vector3 GravityDir = new Vector3(0, -1.0f, 0);
         public float DragForce = 0.4f;
     }
 }

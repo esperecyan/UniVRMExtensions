@@ -43,6 +43,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             {
                 StiffnessForce = vrcPhysBoneParameters.Pull / 0.075f,
                 DragForce = vrcPhysBoneParameters.Spring / 0.2f,
+                GravityPower = vrcPhysBoneParameters.Gravity * 20.0f,
             };
         }
 
@@ -224,6 +225,9 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         SpringCurve = vrcPhysBone.springCurve,
                         Stiffness = vrcPhysBone.stiffness,
                         StiffnessCurve = vrcPhysBone.stiffnessCurve,
+                        Gravity = vrcPhysBone.gravity,
+                        GravityFalloff = vrcPhysBone.gravityFalloff,
+                        GravityFalloffCurve = vrcPhysBone.gravityFalloffCurve,
 #if VRC_SDK_VRCSDK3
                         ImmobileType = vrcPhysBone.immobileType,
 #endif
@@ -298,7 +302,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                     return (vrcPhysBone, parameters, destinationColliderGroups, compare: string.Join("\n", new[]
                     {
                         parameters.StiffnessForce,
-                        vrcPhysBone.gravity,
+                        parameters.GravityPower,
                         parameters.DragForce,
                         TransformUtilities.CalculateDistance(vrcPhysBone.transform, vrcPhysBone.radius),
                 }.Select(parameter => parameter.ToString("F2"))
@@ -316,7 +320,8 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                     : Undo.AddComponent<VRMSpringBone>(converter.Secondary);
                 vrmSpringBone.m_comment = vrcPhysBone.vrcPhysBone.parameter;
                 vrmSpringBone.m_stiffnessForce = vrcPhysBone.parameters.StiffnessForce;
-                vrmSpringBone.m_gravityPower = vrcPhysBone.vrcPhysBone.gravity / 0.05f;
+                vrmSpringBone.m_gravityPower = vrcPhysBone.parameters.GravityPower;
+                vrmSpringBone.m_gravityDir = vrcPhysBone.parameters.GravityDir;
                 vrmSpringBone.m_dragForce = vrcPhysBone.parameters.DragForce;
                 vrmSpringBone.RootBones = vrcPhysBones
                     .Select(db => (/* SDK3未インポート用 */Transform)

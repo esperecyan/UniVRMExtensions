@@ -43,6 +43,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 Damping = vrmSpringBoneParameters.DragForce * 0.6f,
                 Stiffness = 0,
                 Inert = 0,
+                Gravity = vrmSpringBoneParameters.GravityPower * vrmSpringBoneParameters.GravityDir,
             };
         }
 
@@ -128,6 +129,8 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                     {
                         StiffnessForce = vrmSpringBone.m_stiffnessForce,
                         DragForce = vrmSpringBone.m_dragForce,
+                        GravityDir = vrmSpringBone.m_gravityDir,
+                        GravityPower = vrmSpringBone.m_gravityPower,
                     };
                     var boneInfo = new BoneInfo(converter.Source.GetComponent<VRMMeta>(), vrmSpringBone.m_comment);
 
@@ -163,9 +166,9 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                             dynamicBone.m_StiffnessDistrib = dynamicBoneParameters.StiffnessDistrib;
                             dynamicBone.m_Inert = dynamicBoneParameters.Inert;
                             dynamicBone.m_InertDistrib = dynamicBoneParameters.InertDistrib;
+                            dynamicBone.m_Gravity = dynamicBoneParameters.Gravity;
                         }
 
-                        dynamicBone.m_Gravity = vrmSpringBone.m_gravityDir * vrmSpringBone.m_gravityPower;
                         dynamicBone.m_Radius = TransformUtilities.CalculateDistance(
                             vrmSpringBone.transform,
                             vrmSpringBone.m_hitRadius,

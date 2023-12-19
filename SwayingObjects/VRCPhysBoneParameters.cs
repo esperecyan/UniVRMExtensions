@@ -10,20 +10,21 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
     /// </summary>
     public class VRCPhysBoneParameters
     {
-        private static readonly float DefaultStiffness = 0.2f;
+
+#if VRC_SDK_VRCSDK3
+        public IntegrationType IntegrationType = IntegrationType.Simplified;
+#endif
 
         public float Pull = 0.2f;
         public AnimationCurve PullCurve = null;
-#if VRC_SDK_VRCSDK3
-        internal IntegrationType IntegrationType =>
-            this.Spring == VRCPhysBoneParameters.DefaultStiffness && this.StiffnessCurve == null
-                ? IntegrationType.Simplified
-                : IntegrationType.Advanced;
-#endif
         public float Spring = 0.2f;
         public AnimationCurve SpringCurve = null;
-        public float Stiffness = VRCPhysBoneParameters.DefaultStiffness;
+        public float Stiffness = 0.2f;
         public AnimationCurve StiffnessCurve = null;
+        public float Gravity = 0;
+        public AnimationCurve GravityCurve = null;
+        public float GravityFalloff = 0;
+        public AnimationCurve GravityFalloffCurve = null;
 #if VRC_SDK_VRCSDK3
         public ImmobileType ImmobileType;
 #endif

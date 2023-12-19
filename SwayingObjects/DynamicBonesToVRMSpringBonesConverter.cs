@@ -42,6 +42,8 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             {
                 StiffnessForce = dynamicBoneParameters.Elasticity / 0.05f,
                 DragForce = dynamicBoneParameters.Damping / 0.6f,
+                GravityPower = dynamicBoneParameters.Gravity.magnitude,
+                GravityDir = dynamicBoneParameters.Gravity.normalized,
             };
         }
 
@@ -201,6 +203,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         StiffnessDistrib = dynamicBone.m_StiffnessDistrib,
                         Inert = dynamicBone.m_Inert,
                         InertDistrib = dynamicBone.m_InertDistrib,
+                        Gravity = dynamicBone.m_Gravity,
                     }, new BoneInfo(converter.Destination.GetComponent<VRMMeta>(), comment: ""));
 
                     var destinationColliderGroups = new List<VRMSpringBoneColliderGroup>();
@@ -242,13 +245,13 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         }
                     }
 
-                    Vector3 gravity = dynamicBone.m_Gravity;
                     return (dynamicBone, parameters, destinationColliderGroups, compare: string.Join("\n", new[]
                     {
                         parameters.StiffnessForce,
-                        gravity.x,
-                        gravity.y,
-                        gravity.z,
+                        parameters.GravityPower,
+                        parameters.GravityDir.x,
+                        parameters.GravityDir.y,
+                        parameters.GravityDir.z,
                         parameters.DragForce,
                         TransformUtilities.CalculateDistance(dynamicBone.transform, dynamicBone.m_Radius),
                 }.Select(parameter => parameter.ToString("F2"))
@@ -264,9 +267,8 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                     ? converter.Secondary.AddComponent<VRMSpringBone>()
                     : Undo.AddComponent<VRMSpringBone>(converter.Secondary);
                 vrmSpringBone.m_stiffnessForce = dynamicBone.parameters.StiffnessForce;
-                Vector3 gravity = dynamicBone.dynamicBone.m_Gravity;
-                vrmSpringBone.m_gravityPower = gravity.magnitude;
-                vrmSpringBone.m_gravityDir = gravity.normalized;
+                vrmSpringBone.m_gravityPower = dynamicBone.parameters.GravityPower;
+                vrmSpringBone.m_gravityDir = dynamicBone.parameters.GravityDir;
                 vrmSpringBone.m_dragForce = dynamicBone.parameters.DragForce;
                 vrmSpringBone.RootBones = dynamicBones.Select(db => (Transform)db.dynamicBone.m_Root)
                     .Where(sourceBone => sourceBone != null && sourceBone.IsChildOf(converter.Source.transform))
