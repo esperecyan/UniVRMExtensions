@@ -41,8 +41,8 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         {
             return new VRCPhysBoneParameters()
             {
-                Pull = vrmSpringBoneParameters.StiffnessForce * 0.075f,
-                Spring = vrmSpringBoneParameters.DragForce * 0.2f,
+                Pull = vrmSpringBoneParameters.StiffnessForce / 4.0f,
+                Spring = vrmSpringBoneParameters.DragForce,
                 Stiffness = 0,
                 Gravity = vrmSpringBoneParameters.GravityPower / 20.0f,
                 // 移動時に揺れないように
