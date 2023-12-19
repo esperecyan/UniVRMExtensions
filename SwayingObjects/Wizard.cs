@@ -344,6 +344,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         {
             StiffnessForce = vrcPhysBoneParameters.Pull / 0.075f,
             DragForce = vrcPhysBoneParameters.Spring / 0.2f,
+            GravityPower = vrcPhysBoneParameters.Gravity * 20.0f,
         };
     }";
                     break;
@@ -358,6 +359,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             {
                 Pull = vrmSpringBoneParameters.StiffnessForce * 0.075f,
                 Spring = vrmSpringBoneParameters.DragForce * 0.2f,
+                Gravity = vrmSpringBoneParameters.GravityPower / 20.0f;
                 Immobile = 0,
             };
         }
@@ -374,6 +376,8 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         {
             StiffnessForce = dynamicBoneParameters.Elasticity / 0.05f,
             DragForce = dynamicBoneParameters.Damping / 0.6f,
+            GravityPower = dynamicBoneParameters.Gravity.magnitude,
+            GravityDir = dynamicBoneParameters.Gravity.normalized,
         };
     }";
                     break;
@@ -390,6 +394,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             Damping = vrmSpringBoneParameters.DragForce * 0.6f,
             Stiffness = 0,
             Inert = 0,
+            Gravity = vrmSpringBoneParameters.GravityPower * vrmSpringBoneParameters.GravityDir,
         };
     }";
                     break;

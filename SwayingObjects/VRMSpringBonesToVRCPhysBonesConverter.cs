@@ -44,6 +44,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 Pull = vrmSpringBoneParameters.StiffnessForce * 0.075f,
                 Spring = vrmSpringBoneParameters.DragForce * 0.2f,
                 Stiffness = 0,
+                Gravity = vrmSpringBoneParameters.GravityPower / 20.0f,
                 // 移動時に揺れないように
 #if VRC_SDK_VRCSDK3
                 ImmobileType = VRCPhysBoneBase.ImmobileType.World,
@@ -147,6 +148,8 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                     {
                         StiffnessForce = vrmSpringBone.m_stiffnessForce,
                         DragForce = vrmSpringBone.m_dragForce,
+                        GravityDir = vrmSpringBone.m_gravityDir,
+                        GravityPower = vrmSpringBone.m_gravityPower,
                     };
                     var boneInfo = new BoneInfo(converter.Source.GetComponent<VRMMeta>(), vrmSpringBone.m_comment);
 
@@ -179,15 +182,17 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         }
                         if (vrcPhaysBoneParameters != null)
                         {
-                            vrcPhysBone.pull = vrcPhaysBoneParameters.Pull;
-                            vrcPhysBone.pullCurve = vrcPhaysBoneParameters.PullCurve;
 #if VRC_SDK_VRCSDK3
                             vrcPhysBone.integrationType = vrcPhaysBoneParameters.IntegrationType;
 #endif
+                            vrcPhysBone.pull = vrcPhaysBoneParameters.Pull;
+                            vrcPhysBone.pullCurve = vrcPhaysBoneParameters.PullCurve;
                             vrcPhysBone.spring = vrcPhaysBoneParameters.Spring;
                             vrcPhysBone.springCurve = vrcPhaysBoneParameters.SpringCurve;
                             vrcPhysBone.stiffness = vrcPhaysBoneParameters.Stiffness;
                             vrcPhysBone.stiffnessCurve = vrcPhaysBoneParameters.StiffnessCurve;
+                            vrcPhysBone.gravity = vrcPhaysBoneParameters.Gravity;
+                            vrcPhysBone.gravityCurve = vrcPhaysBoneParameters.GravityCurve;
 #if VRC_SDK_VRCSDK3
                             vrcPhysBone.immobileType = vrcPhaysBoneParameters.ImmobileType;
 #endif
@@ -198,7 +203,6 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                             vrcPhysBone.maxStretchCurve = vrcPhaysBoneParameters.MaxStretchCurve;
                         }
 
-                        vrcPhysBone.gravity = vrmSpringBone.m_gravityPower * 0.05f;
                         vrcPhysBone.radius = TransformUtilities.CalculateDistance(
                             vrmSpringBone.transform,
                             vrmSpringBone.m_hitRadius,

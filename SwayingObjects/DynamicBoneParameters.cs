@@ -15,5 +15,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         public AnimationCurve StiffnessDistrib = null;
         public float Inert = 0;
         public AnimationCurve InertDistrib = null;
+        public Vector3 Gravity = new Vector3(0, 0, 0);
+
     }
 }
