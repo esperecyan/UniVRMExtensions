@@ -1,6 +1,9 @@
+using System;
+using System.Linq;
 using UnityEngine;
 #if VRC_SDK_VRCSDK3
 using static VRC.Dynamics.VRCPhysBoneBase;
+using Version = VRC.Dynamics.VRCPhysBoneBase.Version;
 #endif
 
 namespace Esperecyan.UniVRMExtensions.SwayingObjects
@@ -12,6 +15,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
     {
 
 #if VRC_SDK_VRCSDK3
+        public Version Version = (Version)Enum.GetValues(typeof(Version)).Cast<int>().Max();
         public IntegrationType IntegrationType = IntegrationType.Simplified;
 #endif
 

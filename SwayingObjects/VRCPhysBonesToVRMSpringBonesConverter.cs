@@ -219,6 +219,9 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                 {
                     var parameters = parametersConverter(new VRCPhysBoneParameters()
                     {
+#if VRC_SDK_VRCSDK3
+                        Version = vrcPhysBone.version,
+#endif
                         Pull = vrcPhysBone.pull,
                         PullCurve = vrcPhysBone.pullCurve,
                         Spring = vrcPhysBone.spring,

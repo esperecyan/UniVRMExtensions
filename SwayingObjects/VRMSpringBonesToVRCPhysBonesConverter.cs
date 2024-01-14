@@ -41,6 +41,9 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         {
             return new VRCPhysBoneParameters()
             {
+#if VRC_SDK_VRCSDK3
+                Version = VRCPhysBoneBase.Version.Version_1_0,
+#endif
                 Pull = vrmSpringBoneParameters.StiffnessForce / 4.0f,
                 Spring = vrmSpringBoneParameters.DragForce,
                 Stiffness = 0,
@@ -183,6 +186,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                         if (vrcPhaysBoneParameters != null)
                         {
 #if VRC_SDK_VRCSDK3
+                            vrcPhysBone.version = vrcPhaysBoneParameters.Version;
                             vrcPhysBone.integrationType = vrcPhaysBoneParameters.IntegrationType;
 #endif
                             vrcPhysBone.pull = vrcPhaysBoneParameters.Pull;
