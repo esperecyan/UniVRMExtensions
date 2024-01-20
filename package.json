@@ -12,7 +12,7 @@
 		"com.vrmc.univrm": "0.110.0"
 	},
 	"Other Dependencies": {
-		"VRChat SDK3 - Avatars": "3.1.13",
+		"VRChat SDK3 - Avatars": "3.5.0",
 		"Dynamic Bone": "1.2.2"
 	},
 	"author": {
