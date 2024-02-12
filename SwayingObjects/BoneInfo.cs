@@ -1,3 +1,4 @@
+#nullable enable
 using VRM;
 
 namespace Esperecyan.UniVRMExtensions.SwayingObjects

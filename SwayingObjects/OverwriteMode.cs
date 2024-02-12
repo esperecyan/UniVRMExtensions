@@ -1,3 +1,4 @@
+#nullable enable
 
 namespace Esperecyan.UniVRMExtensions.SwayingObjects
 {

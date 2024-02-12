@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Linq;
 using UnityEngine;
@@ -27,16 +28,16 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             DynamicBonesToVRMSpringBones,
         }
 
-        private string version;
+        private string version = null!;
         private Direction direction = Direction.VRCPhysBonesToVRMSpringBones;
-        private Animator source = null;
-        private Animator destination = null;
+        private Animator? source = null;
+        private Animator? destination = null;
         private bool sourceEqualsDestination = false;
         private bool removeSourceSwayingObjectsWhenSourceEqualsDestination = true;
         private OverwriteMode overwriteMode = OverwriteMode.Replace;
         private bool ignoreColliders = false;
-        private MonoScript callbackFunction = null;
-        private Delegate parametersConverter;
+        private MonoScript? callbackFunction = null;
+        private Delegate? parametersConverter;
 
         /// <summary>
         /// 指定されたオブジェクトが<see cref="DynamicBone"/>、または<see cref="DynamicBoneCollider"/>を含んでいれば、<c>true</c>を返します。
@@ -139,7 +140,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             }
             if (this.source != null)
             {
-                string unexistedComponentName = null;
+                string? unexistedComponentName = null;
                 switch (this.direction)
                 {
                     case Direction.VRCPhysBonesToVRMSpringBones:
@@ -185,7 +186,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             }
             if (this.destination != null && this.overwriteMode == OverwriteMode.Replace)
             {
-                string existedComponentName = null;
+                string? existedComponentName = null;
                 switch (this.direction)
                 {
                     case Direction.VRCPhysBonesToVRMSpringBones:
@@ -379,7 +380,7 @@ public class Example : MonoBehaviour
         /// <param name="animator"></param>
         /// <param name="label"></param>
         /// <returns>バリデーションエラーがなければ <c>true</c>。</returns>
-        private bool ReportRootObjectValidation(Animator animator, string label)
+        private bool ReportRootObjectValidation(Animator? animator, string label)
         {
             if (animator == null)
             {
@@ -398,6 +399,11 @@ public class Example : MonoBehaviour
 
         private async void OnWizardCreate()
         {
+            if (this.source == null || this.destination == null || this.parametersConverter == null)
+            {
+                throw new InvalidOperationException();
+            }
+
             switch (this.direction)
             {
                 case Direction.VRCPhysBonesToVRMSpringBones:
@@ -445,8 +451,8 @@ public class Example : MonoBehaviour
                     {
                         Undo.IncrementCurrentGroup();
                         Undo.SetCurrentGroupName($"Remove Swaying objects from “{source.name}”");
+                        undoGroupIndex = Undo.GetCurrentGroup();
                     }
-                    undoGroupIndex = Undo.GetCurrentGroup();
 
                     switch (this.direction)
                     {
@@ -475,7 +481,7 @@ public class Example : MonoBehaviour
                     {
                         PrefabUtility.UnloadPrefabContents(source);
                     }
-                    else
+                    else if (undoGroupIndex != null)
                     {
                         Undo.CollapseUndoOperations(undoGroupIndex.Value);
                     }

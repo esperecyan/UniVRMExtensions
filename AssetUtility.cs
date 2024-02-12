@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace Esperecyan.UniVRMExtensions
             var activeObjectIsPrefabAsset = !string.IsNullOrEmpty(path);
             if (activeObjectIsPrefabAsset)
             {
-                gameObject = PrefabUtility.InstantiatePrefab(gameObject) as GameObject;
+                gameObject = (GameObject)PrefabUtility.InstantiatePrefab(gameObject);
                 if (Path.GetExtension(path) != ".prefab")
                 {
                     path = $"{Path.GetDirectoryName(path)}/{Path.GetFileNameWithoutExtension(path)}.prefab";

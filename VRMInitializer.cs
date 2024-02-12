@@ -1,3 +1,4 @@
+#nullable enable
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
@@ -18,7 +19,7 @@ namespace Esperecyan.UniVRMExtensions
         ///     指定されていなければ、「prefabPath」を<see cref="PrefabUtility.LoadPrefabContents"/>で開き、処理後、
         ///     <see cref="PrefabUtility.SaveAsPrefabAsset"/>、<see cref="PrefabUtility.UnloadPrefabContents"/>、
         ///     <see cref="PrefabUtility.SaveAssets"/>を実行します。</param>
-        public static void Initialize(string prefabPath, GameObject prefabInstance = null)
+        public static void Initialize(string prefabPath, GameObject? prefabInstance = null)
         {
             var prefab = prefabInstance != null ? prefabInstance : PrefabUtility.LoadPrefabContents(prefabPath);
 

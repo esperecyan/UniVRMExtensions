@@ -1,3 +1,4 @@
+#nullable enable
 using UnityEngine;
 
 namespace Esperecyan.UniVRMExtensions.Utilities
@@ -36,7 +37,7 @@ namespace Esperecyan.UniVRMExtensions.Utilities
         internal static float CalculateDistance(
             Transform sourceTransform,
             float distance,
-            Transform destinationTransform = null
+            Transform? destinationTransform = null
         )
         {
             return distance * sourceTransform.lossyScale.x

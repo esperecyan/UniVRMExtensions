@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -28,14 +29,18 @@ namespace Esperecyan.UniVRMExtensions.Utilities
 
             var animator = instance.GetComponent<Animator>();
             var bones = Enum.GetValues(typeof(HumanBodyBones)).Cast<HumanBodyBones>()
-                .Select(bone => (
-                    bone,
-                    transform: bone != HumanBodyBones.LastBone ? animator.GetBoneTransform(bone) : null
-                ))
-                .Where(boneTransformPair => boneTransformPair.transform != null)
+                .Where(bone => bone != HumanBodyBones.LastBone)
+                .Select(bone =>
+                {
+                    var transform = animator.GetBoneTransform(bone);
+                    return (KeyValuePair<HumanBodyBones, Transform>?)(transform != null
+                        ? new(bone, transform)
+                        : null);
+                })
+                .OfType<KeyValuePair<HumanBodyBones, Transform>>() // nullを取り除く
                 .ToDictionary(
-                    boneTransformPair => boneTransformPair.bone,
-                    boneTransformPair => boneTransformPair.transform
+                    boneTransformPair => boneTransformPair.Key,
+                    boneTransformPair => boneTransformPair.Value
                 );
 
             if (!isAsset)
@@ -64,7 +69,7 @@ namespace Esperecyan.UniVRMExtensions.Utilities
         /// <param name="destination"></param>
         /// <param name="sourceSkeletonBones"></param>
         /// <returns>見つからなかった場合は <c>null</c> を返します。</returns>
-        internal static Transform FindCorrespondingBone(
+        internal static Transform? FindCorrespondingBone(
             Transform sourceBone,
             GameObject source,
             GameObject destination,

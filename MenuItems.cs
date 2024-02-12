@@ -1,3 +1,4 @@
+#nullable enable
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -42,7 +43,7 @@ namespace Esperecyan.UniVRMExtensions
                 EditorApplication.update -= Handler;
 
                 taskCompleteSource.SetResult(
-                    request.Result.FirstOrDefault(info => info.name == "jp.pokemori.univrm-extensions")?.version
+                    request.Result.FirstOrDefault(info => info.name == "jp.pokemori.univrm-extensions").version
                 );
             }
 
@@ -54,7 +55,7 @@ namespace Esperecyan.UniVRMExtensions
         [MenuItem("VRM0/プレハブバリアントを作ってVRMプレハブ化", false, MenuItems.Priority)]
         private static async void Initialize()
         {
-            var gameObject = Selection.activeObject as GameObject;
+            var gameObject = (GameObject)Selection.activeObject;
             var animator = gameObject.GetComponent<Animator>();
             if (animator == null || !animator.isHuman)
             {

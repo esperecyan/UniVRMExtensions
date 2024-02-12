@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -48,18 +49,18 @@ namespace Esperecyan.UniVRMExtensions
         /// <param name="source">ヒエラルキーのルート、もしくはプレハブのルートであるコピー元のアバター。</param>
         /// <param name="destination">ヒエラルキーのルート、もしくはプレハブのルートであるコピー先のアバター。</param>
         /// <param name="">コピーするコンポーネント。既定値は <see cref="CopyVRMSettings.SupportedComponents">。</param>
-        public static void Copy(GameObject source, GameObject destination, IEnumerable<Type> components = null)
+        public static void Copy(GameObject source, GameObject destination, IEnumerable<Type>? components = null)
         {
             if (components == null)
             {
                 components = CopyVRMSettings.SupportedComponents;
             }
 
-            GameObject destinationPrefab = null;
+            GameObject? destinationPrefab = null;
             if (!SceneManager.GetActiveScene().GetRootGameObjects().Contains(destination))
             {
                 destinationPrefab = destination;
-                destination = PrefabUtility.InstantiatePrefab(destination) as GameObject;
+                destination = (GameObject)PrefabUtility.InstantiatePrefab(destination);
             }
 
             if (components.Contains(typeof(VRMMeta)))
@@ -85,7 +86,7 @@ namespace Esperecyan.UniVRMExtensions
                 CopyVRMSpringBones.Copy(source: source, destination: destination, sourceSkeletonBones: sourceSkeletonBones);
             }
 
-            if (destinationPrefab)
+            if (destinationPrefab != null)
             {
                 PrefabUtility.ApplyPrefabInstance(destination, InteractionMode.AutomatedAction);
                 UnityEngine.Object.DestroyImmediate(destination);

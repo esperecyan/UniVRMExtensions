@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         internal readonly GameObject Secondary;
 
         private readonly Dictionary<HumanBodyBones, Transform> sourceSkeletonBones;
-        private readonly string destinationAssetPath;
+        private readonly string? destinationAssetPath;
         private readonly int undoGroupIndex;
 
         private bool disposed = false;
@@ -81,7 +82,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             return false;
         }
 
-        internal Transform FindCorrespondingBone(Transform sourceBone, string target)
+        internal Transform? FindCorrespondingBone(Transform sourceBone, string? target)
         {
             var destinationBone = BoneMapper.FindCorrespondingBone(
                 sourceBone,

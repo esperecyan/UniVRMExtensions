@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -69,7 +70,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             Animator destination,
             OverwriteMode overwriteMode = OverwriteMode.Replace,
             bool ignoreColliders = false,
-            ParametersConverter parametersConverter = null
+            ParametersConverter? parametersConverter = null
         )
         {
             if (parametersConverter == null)
@@ -86,9 +87,9 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
 
                 // 変換元の VRMSpringBoneColliderGroup を基に、変換先へ VRCPhysBoneCollider を設定
 #if VRC_SDK_VRCSDK3
-                IDictionary<VRMSpringBoneColliderGroup, List<VRCPhysBoneCollider>>
+                IDictionary<VRMSpringBoneColliderGroup, List<VRCPhysBoneCollider>?>?
 #else
-                dynamic
+                dynamic?
 #endif
                     vrcPhysBoneColliderGroups = null;
                 if (!ignoreColliders)
@@ -125,7 +126,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                                             ? destinationBone.gameObject.AddComponent<VRCPhysBoneCollider>()
                                             : Undo.AddComponent<VRCPhysBoneCollider>(destinationBone.gameObject);
 #else
-                                        = (dynamic)null;
+                                        = (dynamic)null!;
 #endif
                                     vrcPhysBoneCollider.position = TransformUtilities.CalculateOffset(
                                         sourceBone,
@@ -173,12 +174,12 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
                                 ? converter.Secondary.AddComponent<VRCPhysBone>()
                                 : Undo.AddComponent<VRCPhysBone>(converter.Secondary);
 #else
-                            = (dynamic)null;
+                            = (dynamic)null!;
 #endif
                         vrcPhysBone.parameter = vrmSpringBone.m_comment;
                         vrcPhysBone.rootTransform = destinationBone;
 
-                        VRCPhysBoneParameters vrcPhaysBoneParameters = null;
+                        VRCPhysBoneParameters? vrcPhaysBoneParameters = null;
                         if (parametersConverter != null)
                         {
                             vrcPhaysBoneParameters = parametersConverter(vrmSpringBoneParameters, boneInfo);
