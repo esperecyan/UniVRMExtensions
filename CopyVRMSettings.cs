@@ -56,7 +56,7 @@ namespace Esperecyan.UniVRMExtensions
             }
 
             GameObject destinationPrefab = null;
-            if (!SceneManager.GetActiveScene().GetRootGameObjects().Contains(destination.gameObject))
+            if (!SceneManager.GetActiveScene().GetRootGameObjects().Contains(destination))
             {
                 destinationPrefab = destination;
                 destination = PrefabUtility.InstantiatePrefab(destination) as GameObject;
