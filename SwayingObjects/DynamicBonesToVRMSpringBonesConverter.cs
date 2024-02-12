@@ -58,7 +58,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
             Animator destination,
             OverwriteMode overwriteMode = OverwriteMode.Replace,
             bool ignoreColliders = false,
-            ParametersConverter parametersConverter = null
+            ParametersConverter? parametersConverter = null
         )
         {
             if (parametersConverter == null)
