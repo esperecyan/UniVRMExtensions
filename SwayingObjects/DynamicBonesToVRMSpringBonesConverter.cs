@@ -32,7 +32,7 @@ namespace Esperecyan.UniVRMExtensions.SwayingObjects
         /// <param name="springBoneParameters"></param>
         /// <param name="boneInfo"></param>
         /// <returns></returns>
-        private static VRMSpringBoneParameters DefaultParametersConverter(
+        public static VRMSpringBoneParameters DefaultParametersConverter(
             DynamicBoneParameters dynamicBoneParameters,
             BoneInfo boneInfo
         )
