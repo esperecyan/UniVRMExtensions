@@ -9,7 +9,7 @@
 	"license": "MIT",
 	"licensesUrl": "https://github.com/esperecyan/UniVRMExtensions/blob/master/LICENSE.md",
 	"dependencies": {
-		"com.vrmc.univrm": "0.125.0"
+		"com.vrmc.univrm": "0.127.0"
 	},
 	"Other Dependencies": {
 		"VRChat SDK3 - Avatars": "3.5.0",
