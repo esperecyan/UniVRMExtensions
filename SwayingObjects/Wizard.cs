@@ -399,7 +399,7 @@ public class Example : MonoBehaviour
 
         private async void OnWizardCreate()
         {
-            if (this.source == null || this.destination == null || this.parametersConverter == null)
+            if (this.source == null || this.destination == null)
             {
                 throw new InvalidOperationException();
             }
@@ -412,7 +412,7 @@ public class Example : MonoBehaviour
                         this.destination,
                         this.overwriteMode,
                         this.ignoreColliders,
-                        (VRCPhysBonesToVRMSpringBonesConverter.ParametersConverter)this.parametersConverter
+                        (VRCPhysBonesToVRMSpringBonesConverter.ParametersConverter?)this.parametersConverter
                     );
                     break;
                 case Direction.VRMSpringBonesToVRCPhysBones:
@@ -421,7 +421,7 @@ public class Example : MonoBehaviour
                         this.destination,
                         this.overwriteMode,
                         this.ignoreColliders,
-                        (VRMSpringBonesToVRCPhysBonesConverter.ParametersConverter)this.parametersConverter
+                        (VRMSpringBonesToVRCPhysBonesConverter.ParametersConverter?)this.parametersConverter
                     );
                     break;
                 case Direction.DynamicBonesToVRMSpringBones:
@@ -430,7 +430,7 @@ public class Example : MonoBehaviour
                         this.destination,
                         this.overwriteMode,
                         this.ignoreColliders,
-                        (DynamicBonesToVRMSpringBonesConverter.ParametersConverter)this.parametersConverter
+                        (DynamicBonesToVRMSpringBonesConverter.ParametersConverter?)this.parametersConverter
                     );
                     break;
             }
